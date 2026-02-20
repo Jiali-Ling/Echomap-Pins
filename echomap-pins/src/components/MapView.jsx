@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
+import { MapPin, Locate, Plus } from "lucide-react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -11,11 +12,10 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-// 自定义 emoji 图标
 const createEmojiIcon = () => {
   return L.divIcon({
-    html: '<div style="font-size: 32px; text-align: center; line-height: 1;">📍</div>',
-    className: "emoji-marker",
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#e07a5f" fill-opacity="0.2" stroke="#e07a5f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>`,
+    className: "custom-marker",
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
@@ -25,7 +25,7 @@ const createEmojiIcon = () => {
 // 当前位置图标
 const createUserLocationIcon = () => {
   return L.divIcon({
-    html: '<div style="font-size: 28px; text-align: center; line-height: 1;">📍</div>',
+    html: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#81b29a" stroke="#81b29a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>`,
     className: "user-location-marker",
     iconSize: [28, 28],
     iconAnchor: [14, 28],
@@ -78,7 +78,7 @@ function LocateUser({ userLocation, onLocationFound }) {
           }}
           title="刷新当前位置"
         >
-          🎯
+          <Locate size={18} />
         </button>
       </div>
     </div>
@@ -117,7 +117,7 @@ function MapClickHandler({ onMapClick }) {
     >
       <div style={{ textAlign: "center", padding: "8px" }}>
         <p style={{ margin: "0 0 12px 0", fontWeight: "bold" }}>
-          📍 在此添加故事？
+          <MapPin size={18} className="inline-block mr-2" /> 在此添加故事？
         </p>
         <button
           style={{
@@ -199,7 +199,7 @@ export default function MapView({ cards, onSelect, onCreate, onCreateAtLocation 
           border: '2px solid #2d2a24',
           fontWeight: 'bold'
         }}>
-          🎯 正在定位...
+          <Locate size={18} className="inline-block mr-2" /> 正在定位...
         </div>
       )}
       <div className="mapContainerWrapper">
@@ -273,7 +273,7 @@ export default function MapView({ cards, onSelect, onCreate, onCreateAtLocation 
             >
               <Popup>
                 <div style={{ textAlign: "center" }}>
-                  <strong>📍 您的位置</strong>
+                  <Locate size={18} className="inline-block mr-2" /> <strong>您当前位置</strong>
                   <br />
                   <small>精度: ±{Math.round(userLocation.accuracy)}m</small>
                 </div>

@@ -1,3 +1,5 @@
+import { Share2, X, BookOpen, Mic, MapPin, ExternalLink } from "lucide-react";
+
 export default function CardModal({ card, onClose }) {
   if (!card) return null;
 

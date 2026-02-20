@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import usePersistedState from "./hooks/usePersistedState";
 import MapView from "./components/MapView";
 import CardModal from "./components/CardModal";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { Camera, Mic, MapPin, List, Map as MapIcon, Home, PlusCircle, Trash2, Locate } from "lucide-react";
 import L from "leaflet";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -224,7 +224,9 @@ export default function App() {
 
           <aside className="sidepanel">
             <div className="sidepanel__top">
-              <div className="sidepanel__icon">🦊</div>
+              <div className="sidepanel__icon">
+                  <MapPin size={32} color="#fff" />
+              </div>
               <div>
                 <div className="sidepanel__name">EchoMap Pins</div>
                 <div className="sidepanel__tag">Local-first • Shareable • Offline</div>
@@ -239,11 +241,17 @@ export default function App() {
               Next: Camera + PWA offline caching.
             </div>
 
-            <button className="btn btn--primary btn--block" onClick={() => setMode("map")}>
+            <button className="btn btn--primary btn--block" onClick={() => {
+              console.log("Enter button clicked, changing mode to map");
+              setMode("map");
+            }}>
               Enter
             </button>
 
-            <button className="btn btn--ghost btn--block" onClick={() => setMode("create")}>
+            <button className="btn btn--ghost btn--block" onClick={() => {
+              console.log("Create button clicked, changing mode to create");
+              setMode("create");
+            }}>
               Create a card
             </button>
           </aside>
@@ -313,7 +321,7 @@ export default function App() {
               type="button"
               onClick={() => fileRef.current?.click()}
             >
-              📷 Add photo
+              <Camera size={18} className="inline-block mr-2" /> Add photo
             </button>
 
             <input
@@ -348,7 +356,7 @@ export default function App() {
               onClick={recording ? stopRecording : startRecording}
               style={{ background: recording ? "#e07a5f" : undefined }}
             >
-              {recording ? `⏹ Stop (${recordingTime}s)` : "🎤 Record Audio"}
+              {recording ? `⏹ Stop (${recordingTime}s)` : <><Mic size={18} className="inline-block mr-2" /> Record Audio</>}
             </button>
 
             {audio ? (
@@ -392,7 +400,7 @@ export default function App() {
 
           <div style={{ display: "grid", gap: 8 }}>
             <button className="btn" type="button" onClick={getLocation}>
-             📍 Get Location
+             <Locate size={18} className="inline-block mr-2" /> Get Location
             </button>
 
             {location ? (
@@ -437,7 +445,7 @@ export default function App() {
                       onClick={() => onDelete(c.id)}
                       type="button"
                     >
-                      Delete
+                      <Trash2 size={18} />
                     </button>
                   </div>
                 </li>
