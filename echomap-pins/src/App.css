@@ -1,0 +1,1011 @@
+:root{
+  --bg0:#fff7e6;      /* 背景主色：奶油 */
+  --bg1:#f7e7c6;      /* 背景副色：羊皮纸 */
+  --ink:#2d2a24;      /* 主文字 */
+  --muted:#6c6254;    /* 次文字 */
+  --paper:#fffaf0;    /* 卡片底色 */
+  --stroke:#2d2a24;   /* 描边 */
+  --line:#d8c9a8;     /* 边框浅色 */
+  --accent:#e07a5f;   /* 重点色：珊瑚 */
+  --accent2:#81b29a;  /* 辅助色：薄荷 */
+  --shadow: 0 10px 0 rgba(45,42,36,0.18);
+  --shadow2: 0 14px 28px rgba(45,42,36,0.12);
+  --radius: 18px;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  color:var(--ink);
+  font-family: "Segoe UI", "Noto Sans", system-ui, -apple-system, sans-serif;
+
+  /* 伪“纸纹”背景：不用图片 */
+  background:
+    radial-gradient(1200px 900px at 20% 0%, rgba(224,122,95,0.14), transparent 55%),
+    radial-gradient(900px 700px at 90% 10%, rgba(129,178,154,0.16), transparent 55%),
+    repeating-linear-gradient( 45deg, rgba(45,42,36,0.04) 0px, rgba(45,42,36,0.04) 2px, transparent 2px, transparent 8px),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+}
+
+.app{
+  max-width: 1400px;
+  margin:0 auto;
+  padding: clamp(4px, 1vw, 12px);
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .app {
+    max-width: 1600px;
+    padding: clamp(8px, 1.5vw, 16px);
+  }
+}
+
+/* 顶栏：像游戏 UI 的标题条 */
+.topbar{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(8px, 2vw, 12px);
+
+  padding: clamp(8px, 1.5vw, 14px);
+  border:3px solid var(--stroke);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow2);
+}
+
+@media (min-width: 600px) {
+  .topbar {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.brand{
+  margin:0;
+  font-size: clamp(18px, 4vw, 24px);
+  letter-spacing:0.2px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align: center;
+}
+
+/* 内容区 */
+.content{ 
+  margin-top:10px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 clamp(4px, 1vw, 8px);
+}
+
+@media (min-width: 1200px) {
+  .content {
+    max-width: 1600px;
+  }
+}
+
+/* 面板（表单卡） */
+.panel{
+  margin-top:10px;
+  padding: clamp(12px, 2vw, 18px);
+  border:3px solid var(--stroke);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow2);
+  display:grid;
+  gap:12px;
+  position: relative;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1200px) {
+  .panel {
+    max-width: 1600px;
+  }
+}
+
+/* 可爱角标（装饰，不影响功能） */
+.panel::before{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border:2px dashed rgba(45,42,36,0.18);
+  border-radius: calc(var(--radius) - 8px);
+  pointer-events:none;
+}
+
+.field{
+  display:grid;
+  gap:6px;
+  position: relative;
+  z-index: 1;
+}
+
+.field > span{
+  color: var(--muted);
+  font-size: clamp(12px, 2.4vw, 14px);
+  font-weight: 700;
+  letter-spacing:0.2px;
+  text-align: center;
+}
+
+/* 输入框：圆角+描边 */
+.input{
+  width:100%;
+  padding: clamp(12px, 2.5vw, 16px);
+  border-radius: 14px;
+  border: 3px solid var(--stroke);
+  background: #fff;
+  color: var(--ink);
+  outline: none;
+  box-shadow: 0 6px 0 rgba(45,42,36,0.10);
+  font-size: clamp(14px, 2.8vw, 16px);
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@media (max-width: 480px) {
+  .input {
+    border-width: 2px;
+    padding: 12px;
+    font-size: 16px; /* 防止iOS自动缩放 */
+  }
+}
+
+.input:focus{
+  border-color: var(--accent);
+}
+
+.input--area{
+  min-height: 130px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* 列表 */
+.list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:12px;
+}
+
+.card{
+  border:3px solid var(--stroke);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow2);
+  padding: clamp(12px, 2.5vw, 16px);
+}
+
+@media (max-width: 480px) {
+  .card {
+    border-width: 2px;
+    padding: 10px;
+  }
+}
+
+.card__row{
+  display:flex;
+  justify-content:space-between;
+  gap: clamp(10px, 2vw, 12px);
+  align-items:flex-start;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .card__row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .card__row .btn {
+    width: 100%;
+  }
+}
+
+.card__title{
+  margin:0;
+  font-weight: 900;
+  font-size: clamp(15px, 3vw, 17px);
+}
+
+.card__meta{
+  margin:6px 0 0;
+  font-size: clamp(11px, 2.2vw, 13px);
+  color: var(--muted);
+}
+
+.card__text{
+  margin:10px 0 0;
+  color: rgba(45,42,36,0.9);
+  line-height:1.45;
+  font-size: clamp(13px, 2.6vw, 15px);
+}
+
+.hint{
+  margin:0;
+  color: var(--muted);
+  font-size: clamp(11px, 2.2vw, 13px);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.empty{
+  color: var(--muted);
+  text-align: center;
+  font-size: clamp(14px, 2.8vw, 16px);
+}
+
+/* 按钮：卡通描边 + “按下”效果 */
+.btn{
+  border:3px solid var(--stroke);
+  border-radius: 14px;
+  padding: clamp(10px, 2vw, 14px) clamp(12px, 3vw, 18px);
+  background: #fff;
+  color: var(--ink);
+  cursor:pointer;
+  box-shadow: 0 8px 0 rgba(45,42,36,0.18);
+  transition: transform 0.04s ease;
+  font-weight: 800;
+  font-size: clamp(14px, 2.5vw, 16px);
+  text-align: center;
+}
+
+.btn:active{
+  transform: translateY(3px);
+  box-shadow: 0 5px 0 rgba(45,42,36,0.18);
+}
+
+.btn--ghost{
+  background: #fff;
+}
+
+.btn--primary{
+  background: rgba(129,178,154,0.28);
+}
+
+.btn--danger{
+  background: rgba(224,122,95,0.25);
+}
+
+.btn--block{
+  width:100%;
+}
+
+.actions{
+  display:flex;
+  flex-wrap: wrap;
+  gap:clamp(6px, 1.5vw, 10px);
+  align-items:center;
+  justify-content:center;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .actions {
+    width: auto;
+    justify-content: flex-end;
+  }
+}
+
+/* ===== Home (Hero) ===== */
+.home{
+  min-height: 100vh;
+  padding: clamp(4px, 1vw, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero{
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vw, 20px);
+  align-items: center;
+}
+
+/* 桌面端双列布局 */
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row;
+    gap: 24px;
+    align-items: stretch;
+  }
+  
+  .scroll,
+  .sidepanel {
+    flex: 1;
+    max-width: none;
+    width: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    max-width: 1600px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home {
+    padding: clamp(4px, 1vw, 8px);
+  }
+  
+  .hero {
+    gap: 10px;
+  }
+}
+
+/* Left parchment “scene” */
+.scroll{
+  border: 4px solid var(--stroke);
+  border-radius: 26px;
+  background: #151412;
+  box-shadow: var(--shadow2);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+}
+@media (max-width: 480px) {
+  .scroll {
+    border-width: 3px;
+    border-radius: 20px;
+  }
+}
+/* paper texture + worn corners (no external image) */
+.scroll::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(14px 14px at 8% 12%, rgba(45,42,36,0.12), transparent 70%),
+    radial-gradient(18px 18px at 92% 18%, rgba(45,42,36,0.10), transparent 72%),
+    radial-gradient(20px 20px at 12% 88%, rgba(45,42,36,0.10), transparent 72%),
+    radial-gradient(16px 16px at 90% 86%, rgba(45,42,36,0.10), transparent 72%),
+    repeating-linear-gradient( 35deg, rgba(45,42,36,0.04) 0px, rgba(45,42,36,0.04) 2px, transparent 2px, transparent 10px);
+  opacity: 0.55;
+  pointer-events:none;
+}
+
+.scroll__inner{
+  position: relative;
+  padding: 10px;
+  min-height: 520px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* 桌面双列布局时，自动适应高度 */
+@media (min-width: 768px) {
+  .scroll__inner {
+    min-height: 100%;
+  }
+}
+
+/* Right dark info panel */
+.sidepanel{
+  border: 4px solid var(--stroke);
+  border-radius: 26px;
+  background: rgba(25, 22, 18, 0.88);
+  color: #fff;
+  box-shadow: var(--shadow2);
+  padding: clamp(12px, 2vw, 16px);
+  display: grid;
+  gap: clamp(10px, 2vw, 12px);
+  align-content: start;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .sidepanel {
+    border-width: 3px;
+    border-radius: 20px;
+    padding: 14px;
+  }
+}
+
+.sidepanel__top{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  justify-content: center;
+}
+
+.sidepanel__icon{
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  border: 3px solid rgba(255,255,255,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,0.08);
+}
+
+.sidepanel__name{
+  font-size: clamp(18px, 4vw, 22px);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.sidepanel__tag{
+  margin-top: 2px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 800;
+  font-size: clamp(11px, 2.2vw, 13px);
+}
+
+.sidepanel__quote{
+  font-size: clamp(16px, 3.5vw, 20px);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.sidepanel__desc{
+  color: rgba(255,255,255,0.78);
+  line-height: 1.6;
+  font-size: clamp(13px, 2.8vw, 15px);
+}
+
+/* 移动端布局调整 */
+@media (max-width: 767px){
+  .scroll__inner{ min-height: 360px; }
+  .scroll, .sidepanel {
+    max-width: 95%;
+  }
+}
+
+/* 关键：用 aspect-ratio 控制"画框"的形状 */
+.scroll__media{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;          /* 移动端竖图，3:4 */
+  border-radius: 22px;
+  overflow: hidden;
+  background: #151412;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+}
+
+/* 桌面双列时调整图片比例 */
+@media (min-width: 768px) {
+  .scroll__media {
+    aspect-ratio: 4 / 5;  /* 桌面双列时用 4:5 更协调 */
+  }
+}
+
+/* 关键：cover 让它铺满画框，不会露黑底 */
+.heroImage{
+  width: 100%;
+  height: 100%;
+  display:block;
+  object-fit: cover;
+  object-position: 50% 15%;     /* 让主体靠上，避免脚被切太多（可微调） */
+}
+
+/* 渐变融合：移动端向下，桌面双列时向右 */
+.heroFade{
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, transparent 60%, rgba(21,20,18,0.92) 100%);
+  pointer-events:none;
+}
+
+@media (min-width: 768px){
+  .heroFade{
+    background: linear-gradient(90deg, transparent 62%, rgba(21,20,18,0.92) 100%);
+  }
+}
+
+
+.mapView {
+  padding: clamp(4px, 1vw, 12px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1200px) {
+  .mapView {
+    max-width: 1600px;
+  }
+}
+
+.mapContainerWrapper {
+  width: 100%;
+  height: clamp(350px, 55vh, 550px);
+  margin-bottom: clamp(12px, 2vw, 16px);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  box-shadow: 2px 2px 0 var(--line);
+}
+
+@media (min-width: 768px) {
+  .mapContainerWrapper {
+    height: clamp(450px, 65vh, 650px);
+  }
+}
+
+@media (max-width: 480px) {
+  .mapContainerWrapper {
+    height: clamp(280px, 48vh, 420px);
+    border-radius: 12px;
+  }
+}
+
+.emoji-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.user-location-marker {
+  background: transparent !important;
+  border: none !important;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+.mapPlaceholder {
+  background: var(--paper);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 60px 20px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mapPlaceholder p {
+  font-size: 1.2rem;
+  margin: 8px 0;
+}
+
+.mapCardList {
+  margin-top: 32px;
+}
+
+.mapCardList h3 {
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.mapCardList .card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mapCardList .card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow2);
+}
+
+
+/* ========== CardModal 样式 ========== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: clamp(8px, 2vw, 16px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow-y: auto;
+}
+
+.modal {
+  background: var(--paper);
+  border-radius: var(--radius);
+  border: 3px solid var(--stroke);
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow2);
+  margin: auto;
+}
+
+@media (min-width: 1200px) {
+  .modal {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    max-height: 95vh;
+    border-width: 2px;
+    border-radius: 14px;
+  }
+  
+  .modalOverlay {
+    padding: 8px;
+  }
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(12px, 2vw, 16px);
+  border-bottom: 2px solid var(--line);
+  gap: 12px;
+}
+
+.modal__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(16px, 4vw, 22px);
+  word-break: break-word;
+}
+
+.modal__body {
+  padding: clamp(12px, 2vw, 16px);
+}
+
+.modal__photo {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+}
+
+.modal__photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.modal__section {
+  margin-bottom: clamp(12px, 2vw, 16px);
+}
+
+.modal__section h3 {
+  color: var(--ink);
+  margin: 0 0 8px 0;
+  font-size: clamp(15px, 3vw, 18px);
+}
+
+.modal__text {
+  color: var(--ink);
+  line-height: 1.6;
+  margin: 0;
+  font-size: clamp(13px, 2.8vw, 15px);
+  word-break: break-word;
+}
+
+.modal__footer {
+  padding: clamp(12px, 2vw, 16px);
+  border-top: 2px solid var(--line);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+/* ========== 地图容器 + pin + 弹窗样式 ========== */
+
+/* 地图容器 */
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: clamp(350px, 60vh, 500px);
+  background: linear-gradient(135deg, #e8dcc5 0%, #f0e6d2 100%);
+  border: 3px solid var(--stroke);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+/* 地图网格背景 */
+.mapGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(45, 42, 36, 0.1) 49px, rgba(45, 42, 36, 0.1) 50px),
+    repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(45, 42, 36, 0.1) 49px, rgba(45, 42, 36, 0.1) 50px);
+  pointer-events: none;
+}
+
+/* 地图标记点 */
+.mapPin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  font-size: 32px;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.mapPin:hover {
+  transform: translate(-50%, -100%) scale(1.2);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  z-index: 20;
+}
+
+/* 地图中心十字 */
+.mapCrosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.mapCrosshair::before,
+.mapCrosshair::after {
+  content: "";
+  position: absolute;
+  background: var(--stroke);
+}
+
+.mapCrosshair::before {
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.mapCrosshair::after {
+  top: 50%;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+/* 地图控制按钮 */
+.mapControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.mapZoom {
+  color: var(--muted);
+  font-size: 0.9rem;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* 地图底部信息 */
+.mapFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 10px);
+  padding: clamp(4px, 1vw, 8px) 0;
+}
+
+.mapFooter .hint {
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .mapFooter {
+    gap: 6px;
+  }
+}
+
+/* ========== 照片上传样式 ========== */
+.photoBox {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  text-align: center;
+}
+
+.photoPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.photoImg {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 14px;
+  border: 3px solid var(--stroke);
+  box-shadow: var(--shadow);
+}
+
+.audioBox {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.audioPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.audioPreview audio {
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+/* 模态框内音频播放器样式 */
+.modal__section audio {
+  background: rgba(129, 178, 154, 0.1);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.modal__section audio::-webkit-media-controls-panel {
+  background: transparent;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .mapContainer {
+    height: 400px;
+  }
+  
+  .mapPin {
+    font-size: 28px;
+  }
+}
+
+
+/* ========== 响应式设计优化 ========== */
+
+/* 确保触摸区域足够大（触摸设备） */
+@media (hover: none) and (pointer: coarse) {
+  .btn {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 16px;
+  }
+  
+  .input,
+  .input--area {
+    font-size: 16px;
+    padding: 12px;
+  }
+}
+
+/* 小屏幕优化 */
+@media (max-width: 480px) {
+  .app {
+    padding: clamp(2px, 1vw, 8px);
+  }
+  
+  .topbar {
+    padding: 8px;
+    border-width: 2px;
+  }
+  
+  .brand {
+    font-size: clamp(16px, 5vw, 20px);
+  }
+  
+  .panel {
+    padding: clamp(10px, 2vw, 14px);
+    border-width: 2px;
+  }
+  
+  .btn {
+    font-size: clamp(13px, 3vw, 15px);
+  }
+}
+
+.mapWrap{
+  margin-top: 14px;
+  height: calc(100vh - 170px); /* 顶部有 header，所以减掉一些 */
+  border: 3px solid var(--stroke);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: var(--shadow2);
+}
+
+/* react-leaflet 最终会渲染 .leaflet-container */
+.leaflet-container{
+  width: 100%;
+  height: 100%;
+}
+
+/* Leaflet 控制按钮响应式优化 */
+@media (max-width: 480px) {
+  .leaflet-control-zoom {
+    margin: 8px !important;
+  }
+  
+  .leaflet-control-zoom a {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 20px !important;
+  }
+  
+  .leaflet-control-attribution {
+    font-size: 10px !important;
+  }
+  
+  .leaflet-popup-content {
+    max-width: 250px !important;
+    min-width: 200px !important;
+  }
+}
+
+/* 确保 Leaflet popup 在触摸设备上易于使用 */
+@media (hover: none) and (pointer: coarse) {
+  .leaflet-popup-close-button {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 24px !important;
+  }
+}
+
+/* 全局响应式图片 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 防止内容溢出 */
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 确保所有容器不会超出视口 */
+.app,
+.content,
+.panel,
+.modal,
+.mapView {
+  box-sizing: border-box;
+}
+
