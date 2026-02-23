@@ -3,14 +3,33 @@ import { Share2, X, BookOpen, Mic, MapPin, ExternalLink } from "lucide-react";
 export default function CardModal({ card, onClose }) {
   if (!card) return null;
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: card.title,
+          text: `我在 EchoMap Pins 给你留下了一个地点故事：${card.title}\n"${card.story}"`,
+          url: window.location.href,
+        });
+      } catch (err) { console.log("Share failed", err); }
+    } else {
+      alert("当前浏览器不支持原生分享，请复制链接。");
+    }
+  };
+
   return (
     <div className="modalOverlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal__header">
           <h2 className="modal__title">{card.title}</h2>
-          <button className="btn btn--ghost" onClick={onClose}>
-            ✕
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button className="btn btn--ghost" onClick={handleShare}>
+              <Share2 size={20} />
+            </button>
+            <button className="btn btn--ghost" onClick={onClose}>
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         <div className="modal__body">
@@ -21,13 +40,13 @@ export default function CardModal({ card, onClose }) {
           )}
 
           <div className="modal__section">
-            <h3>📝 Story</h3>
+            <h3><BookOpen size={18} className="inline-block mr-2" /> Story</h3>
             <p className="modal__text">{card.story}</p>
           </div>
 
           {card.audio && (
             <div className="modal__section">
-              <h3>🎤 语音评价</h3>
+              <h3><Mic size={18} className="inline-block mr-2" /> 语音评价</h3>
               <audio 
                 controls 
                 src={card.audio} 
@@ -45,7 +64,7 @@ export default function CardModal({ card, onClose }) {
 
           {card.location && (
             <div className="modal__section">
-              <h3>📍 Location</h3>
+              <h3><MapPin size={18} className="inline-block mr-2" /> Location</h3>
               <p className="modal__text">
                 Lat: {card.location.lat.toFixed(6)}, Lng: {card.location.lng.toFixed(6)}
                 <br />
@@ -63,7 +82,7 @@ export default function CardModal({ card, onClose }) {
                   textAlign: 'center'
                 }}
               >
-                🗺️ 在 Google Maps 中查看
+                <ExternalLink size={18} className="inline-block mr-2" /> 在 Google Maps 中查看
               </a>
             </div>
           )}
