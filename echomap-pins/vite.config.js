@@ -56,8 +56,48 @@ export default defineConfig({
                 maxAgeSeconds: 30 * 24 * 60 * 60,
               },
             },
+          },          // Leaflet map tiles - StaleWhileRevalidate for better offline experience
+          {
+            urlPattern: /^https:\/\/(.*\.)?tile\.openstreetmap\.org\/.*/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "osm-tiles",
+              expiration: {
+                maxEntries: 500,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
           },
-        ],
+          // CartoDB tiles (dark/light themes)
+          {
+            urlPattern: /^https:\/\/(.*\.)?basemaps\.cartocdn\.com\/.*/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "cartodb-tiles",
+              expiration: {
+                maxEntries: 500,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          // Leaflet CSS and assets
+          {
+            urlPattern: /^https:\/\/unpkg\.com\/leaflet.*/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "leaflet-assets",
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 30 * 24 * 60 * 60,
+              },
+            },
+          },        ],
       },
 
       // 开发阶段可开可不开；真正验收建议用 build+preview

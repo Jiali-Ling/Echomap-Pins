@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-2ae722a1'], (function (workbox) { 'use strict';
+define(['./workbox-0491c06e'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
@@ -79,7 +79,7 @@ define(['./workbox-2ae722a1'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "index.html",
-    "revision": "0.73oqt5cv4qg"
+    "revision": "0.2if0tdjua5g"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -91,6 +91,31 @@ define(['./workbox-2ae722a1'], (function (workbox) { 'use strict';
     "cacheName": "images",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 80,
+      maxAgeSeconds: 2592000
+    })]
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/(.*\.)?tile\.openstreetmap\.org\/.*/, new workbox.StaleWhileRevalidate({
+    "cacheName": "osm-tiles",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 500,
+      maxAgeSeconds: 2592000
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/(.*\.)?basemaps\.cartocdn\.com\/.*/, new workbox.StaleWhileRevalidate({
+    "cacheName": "cartodb-tiles",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 500,
+      maxAgeSeconds: 2592000
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/unpkg\.com\/leaflet.*/, new workbox.StaleWhileRevalidate({
+    "cacheName": "leaflet-assets",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 20,
       maxAgeSeconds: 2592000
     })]
   }), 'GET');
