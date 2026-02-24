@@ -41,11 +41,12 @@ export default defineConfig({
       },
 
       workbox: {
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         // 把打包产物都缓存（js/css/html/svg/png等）
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,json,txt}"],
 
         runtimeCaching: [
-          // 图片走 CacheFirst：离线也能看你 landing + 卡片缩略图（如果在静态资源里/已缓存）
+          // 图片�?CacheFirst：离线也能看�?landing + 卡片缩略图（如果在静态资源里/已缓存）
           {
             urlPattern: ({ request }) => request.destination === "image",
             handler: "CacheFirst",
