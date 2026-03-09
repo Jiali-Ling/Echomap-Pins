@@ -148,3 +148,56 @@
   color: #a0aec0;
   font-family: monospace;
 }
+
+/* =================== DARK MODE =================== */
+[data-theme="dark"] .navigation-panel {
+  background: linear-gradient(135deg, #0d1a0d 0%, #1a2e1a 100%);
+}
+
+[data-theme="dark"] .nav-panel-header {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 40, 20, 0.95) 0%,
+    rgba(20, 40, 20, 0.98) 100%
+  );
+  border-bottom-color: rgba(127, 184, 0, 0.15);
+}
+
+[data-theme="dark"] .nav-panel-header h2 {
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .nav-close-btn {
+  background: rgba(127, 184, 0, 0.08);
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .nav-close-btn:hover {
+  background: rgba(127, 184, 0, 0.15);
+}
+
+[data-theme="dark"] .nav-mode-toggle {
+  background: #1e3a1e;
+  border-bottom-color: rgba(127, 184, 0, 0.1);
+}
+
+[data-theme="dark"] .mode-btn {
+  background: #162a16;
+  border-color: rgba(127, 184, 0, 0.2);
+  color: #81b29a;
+}
+
+[data-theme="dark"] .mode-btn:hover {
+  border-color: rgba(127, 184, 0, 0.4);
+  background: rgba(127, 184, 0, 0.08);
+}
+
+[data-theme="dark"] .map-placeholder {
+  background: #162a16;
+  border-color: rgba(127, 184, 0, 0.15);
+  color: #81b29a;
+}
+
+[data-theme="dark"] .map-hint {
+  color: #6b9b6b;
+}

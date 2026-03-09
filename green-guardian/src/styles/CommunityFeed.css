@@ -343,3 +343,77 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* =================== DARK MODE =================== */
+[data-theme="dark"] .feed-header h1 {
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .feed-subtitle {
+  color: #81b29a;
+}
+
+[data-theme="dark"] .observation-card {
+  background: #1e3a1e;
+  border-color: rgba(127, 184, 0, 0.1);
+}
+
+[data-theme="dark"] .observation-card:hover {
+  border-color: rgba(127, 184, 0, 0.25);
+}
+
+[data-theme="dark"] .delete-btn {
+  background: rgba(20, 40, 20, 0.95);
+  color: #e76157;
+}
+
+[data-theme="dark"] .delete-btn:hover {
+  background: #e76157;
+  color: white;
+}
+
+[data-theme="dark"] .observer-avatar {
+  background: linear-gradient(135deg, #2d5016, #4a7a35);
+}
+
+[data-theme="dark"] .card-footer {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .card-image-fallback {
+  background: linear-gradient(135deg, #1e3a1e, #2d5a2d);
+  color: #81b29a;
+}
+
+/* =================== CARD IMAGE FALLBACK =================== */
+.card-image-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8f2e3, #c8dcc3);
+  color: #5a7a5a;
+}
+
+/* =================== DESKTOP =================== */
+@media (min-width: 1024px) {
+  .community-feed {
+    padding: 32px 40px;
+  }
+  .feed-header h1 {
+    font-size: 40px;
+  }
+  .feed-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+  }
+  .feed-controls {
+    flex-direction: row;
+    align-items: center;
+  }
+  .search-bar {
+    flex: 1;
+    max-width: 400px;
+  }
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Moon, Sun, WifiOff } from "lucide-react";
 import usePersistedState from "./hooks/usePersistedState";
 import BottomNav from "./components/BottomNav";
 import HomePage from "./components/HomePage";
@@ -51,7 +52,7 @@ const sampleObservations = [
     id: "sample-2",
     species: "Humpback Whale",
     confidence: 91,
-    photo: "/images/wildlife/Cedit Jack Ashton.jpg",
+    photo: "/images/wildlife/Cedit%20Jack%20Ashton.jpg",
     description: "Breaching whale spotted during boat tour!",
     location: { lat: 21.3099, lng: -157.8581 },
     userId: "system",
@@ -126,6 +127,8 @@ const sampleObservations = [
 
 export default function App() {
   const [currentView, setCurrentView] = useState("home");
+  const [isDark, setIsDark] = usePersistedState("gg_dark_mode", false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine ?? true);
   const [observations, setObservations] = usePersistedState(
     "green_guardian_observations",
     sampleObservations
@@ -139,6 +142,21 @@ export default function App() {
   const [selectedObservation, setSelectedObservation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [navigationTarget, setNavigationTarget] = useState(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+  }, [isDark]);
+
+  useEffect(() => {
+    const onOnline = () => setIsOnline(true);
+    const onOffline = () => setIsOnline(false);
+    window.addEventListener("online", onOnline);
+    window.addEventListener("offline", onOffline);
+    return () => {
+      window.removeEventListener("online", onOnline);
+      window.removeEventListener("offline", onOffline);
+    };
+  }, []);
 
   useEffect(() => {
     if (observations.length === 0) {
@@ -157,8 +175,14 @@ export default function App() {
           accuracy: position.coords.accuracy,
         });
       },
-      (error) => {},
-      { enableHighAccuracy: true }
+      (error) => {
+        setUserLocation({
+          lat: 40.7128,
+          lng: -74.0060,
+          accuracy: 0,
+        });
+      },
+      { enableHighAccuracy: true, timeout: 5000 }
     );
   }, []);
 
@@ -282,6 +306,10 @@ export default function App() {
     }
   };
 
+  const handleUpdateAvatar = (avatarDataUrl) => {
+    setUser((prev) => ({ ...prev, avatar: avatarDataUrl }));
+  };
+
   const handleObservationClick = (observation) => {
     setSelectedObservation(observation);
   };
@@ -295,6 +323,12 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {!isOnline && (
+        <div className="offline-banner" role="alert">
+          <WifiOff size={16} />
+          <span>You're offline — changes will sync when reconnected</span>
+        </div>
+      )}
       <div className="view-container">
         {currentView === "home" && (
           <HomePage onNavigate={setCurrentView} />
@@ -333,11 +367,24 @@ export default function App() {
             onLogout={handleLogout}
             onDeleteObservation={handleDeleteObservation}
             onObservationClick={handleObservationClick}
+            onUpdateAvatar={handleUpdateAvatar}
           />
         )}
       </div>
 
-      <BottomNav currentView={currentView} onNavigate={setCurrentView} />
+      <BottomNav
+        currentView={currentView}
+        onNavigate={setCurrentView}
+        isDark={isDark}
+        onToggleDark={() => setIsDark(d => !d)}
+      />
+      <button
+        className="mobile-dark-toggle"
+        onClick={() => setIsDark(d => !d)}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {isDark ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
 
       {selectedObservation && currentView === "map" ? (
         <BottomSheetModal

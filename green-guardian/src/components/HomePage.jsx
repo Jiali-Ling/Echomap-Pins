@@ -1,65 +1,39 @@
-import { useState, useEffect, useRef } from "react";
-import { 
-  Camera, 
-  MapPin, 
-  Users, 
-  Award, 
-  Leaf, 
-  Globe,
-  Sparkles,
-  ArrowRight,
-  Shield,
-  TrendingUp,
-  Heart,
-  Zap
+import {
+  Camera, MapPin, Users, Award, Leaf, Globe, Sparkles, ArrowRight,
+  Shield, TrendingUp, Heart, Zap, CheckCircle, Star, TreePine, Eye
 } from "lucide-react";
 import "../styles/HomePage.css";
 
 export default function HomePage({ onNavigate }) {
-  const [scrollY, setScrollY] = useState(0);
-  const heroRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = (e) => {
-      const target = e.target;
-      setScrollY(target.scrollTop);
-    };
-
-    const scrollContainer = document.querySelector('.home-page');
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll);
-      return () => scrollContainer.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
   const features = [
     {
       icon: Camera,
-      title: "AI Species Recognition",
-      description: "Instantly identify wildlife using advanced machine learning technology",
-      color: "#7fb800",
-      gradient: "linear-gradient(135deg, #7fb800, #81b29a)"
+      tag: "AI-Powered",
+      title: "Instant Species Recognition",
+      description: "Point your camera at any animal or plant. Our deep-learning model identifies the species in under 2 seconds with 98% accuracy.",
+      gradient: "linear-gradient(135deg, #7fb800, #5a9e00)"
     },
     {
       icon: MapPin,
-      title: "Real-time Location Tracking",
-      description: "Discover wildlife observations on an interactive map with AR navigation",
-      color: "#667eea",
-      gradient: "linear-gradient(135deg, #667eea, #764ba2)"
+      tag: "Real-time",
+      title: "Interactive Wildlife Map",
+      description: "Explore sightings on a live global map with AR navigation. Filter by species, date, and distance from your location.",
+      gradient: "linear-gradient(135deg, #667eea, #4a5bbf)"
     },
     {
       icon: Users,
-      title: "Global Community",
-      description: "Connect with wildlife enthusiasts and share your discoveries worldwide",
-      color: "#f093fb",
-      gradient: "linear-gradient(135deg, #f093fb, #f5576c)"
+      tag: "Community",
+      title: "Global Citizen Scientists",
+      description: "Connect with 50,000+ wildlife enthusiasts across 120+ countries. Share discoveries, discuss observations, and learn together.",
+      gradient: "linear-gradient(135deg, #e07a5f, #c45a3f)"
     },
     {
-      icon: Award,
-      title: "Conservation Impact",
-      description: "Your observations contribute to wildlife conservation research and protection",
-      color: "#feca57",
-      gradient: "linear-gradient(135deg, #feca57, #ff9ff3)"
+      icon: Shield,
+      tag: "Conservation",
+      title: "Research & Protection",
+      description: "Every observation feeds into conservation databases, helping researchers track endangered species and protect critical habitats.",
+      gradient: "linear-gradient(135deg, #81b29a, #5a8e78)"
     }
   ];
 
@@ -67,121 +41,157 @@ export default function HomePage({ onNavigate }) {
     { value: "10K+", label: "Species Identified", icon: Leaf },
     { value: "50K+", label: "Active Users", icon: Users },
     { value: "200K+", label: "Observations", icon: Globe },
-    { value: "98%", label: "Accuracy Rate", icon: Sparkles }
+    { value: "98%", label: "AI Accuracy", icon: Sparkles }
   ];
 
   const steps = [
     {
       number: "01",
       title: "Scan Wildlife",
-      description: "Use your camera to capture any animal or plant you encounter",
+      description: "Open the camera and point it at any animal or plant you encounter — works in real-time, no internet needed for basic recognition.",
       icon: Camera
     },
     {
       number: "02",
-      title: "Get Instant Results",
-      description: "Our AI identifies the species with detailed information in seconds",
+      title: "AI Identifies Instantly",
+      description: "Our on-device AI model returns the species name, conservation status, habitat info, and behavioral facts within seconds.",
       icon: Zap
     },
     {
       number: "03",
-      title: "Share & Explore",
-      description: "Share your discovery and explore observations from around the world",
+      title: "Share & Protect",
+      description: "Pin your observation on the global map, earn conservation badges, and contribute to biodiversity research worldwide.",
       icon: Heart
     }
   ];
 
-  const parallaxOffset = scrollY * 0.5;
-  const heroOpacity = Math.max(0, 1 - scrollY / 400);
-  const heroScale = Math.max(0.9, 1 - scrollY / 2000);
+  const testimonials = [
+    {
+      name: "Sarah M.",
+      role: "Field Biologist",
+      text: "Green Guardian changed how I document fieldwork. The AI accuracy rivals professional identification tools.",
+      stars: 5
+    },
+    {
+      name: "James K.",
+      role: "Nature Photographer",
+      text: "I've identified over 300 species in my backyard alone. The community maps are incredible for finding new sightings.",
+      stars: 5
+    },
+    {
+      name: "Priya R.",
+      role: "Conservation Student",
+      text: "The conservation data this app generates is genuinely used by researchers. My observations matter.",
+      stars: 5
+    }
+  ];
+
+  const galleryItems = [
+    { src: "/images/wildlife/eagle.jpg", species: "Bald Eagle", location: "Pacific Northwest, USA", className: "gallery-item-large", objectPos: "center 25%" },
+    { src: "/images/wildlife/fox.jpg", species: "Red Fox", location: "New York, USA", className: "", objectPos: "center center" },
+    { src: "/images/wildlife/Butterfly.jpg", species: "Monarch Butterfly", location: "Mexico City, Mexico", className: "", objectPos: "center center" },
+    { src: "/images/wildlife/Goliath_heron_standing_cropped.jpg", species: "Goliath Heron", location: "Kenya, Africa", className: "", objectPos: "center top" },
+    { src: "/images/wildlife/Hausziege_04.jpg", species: "Mountain Goat", location: "Rocky Mountains, USA", className: "", objectPos: "center center" },
+    { src: "/images/wildlife/Cedit%20Jack%20Ashton.jpg", species: "Humpback Whale", location: "Hawaii, USA", className: "", objectPos: "center center" }
+  ];
 
   return (
     <div className="home-page">
-      <section 
-        className="hero-section" 
-        ref={heroRef}
-        style={{
-          opacity: heroOpacity,
-          transform: `scale(${heroScale}) translateY(${parallaxOffset}px)`
-        }}
-      >
-        <div className="hero-background">
-          <div className="hero-gradient"></div>
-          <div className="hero-pattern"></div>
-        </div>
-        
+
+      {/* ── HERO ── */}
+      <section className="hero-section" aria-label="Hero">
+        <div className="hero-overlay" aria-hidden="true" />
+
         <div className="hero-content">
           <div className="hero-badge">
-            <Leaf size={16} />
+            <Leaf size={15} aria-hidden="true" />
             <span>Protecting Wildlife Through Technology</span>
           </div>
-          
+
           <h1 className="hero-title">
             Discover & Protect
             <br />
             <span className="hero-title-highlight">Wildlife Together</span>
           </h1>
-          
+
           <p className="hero-description">
-            Join thousands of nature enthusiasts using AI-powered species recognition
-            to identify, track, and protect wildlife around the globe.
+            Join 50,000+ nature enthusiasts using AI-powered species recognition
+            to identify, track, and protect wildlife across 120+ countries.
           </p>
-          
+
           <div className="hero-actions">
-            <button 
+            <button
               className="btn-hero btn-hero-primary"
               onClick={() => onNavigate('scan')}
+              aria-label="Start scanning wildlife"
             >
-              <Camera size={20} />
+              <Camera size={20} aria-hidden="true" />
               Start Scanning
-              <ArrowRight size={20} />
+              <ArrowRight size={18} aria-hidden="true" />
             </button>
-            <button 
+            <button
               className="btn-hero btn-hero-secondary"
               onClick={() => onNavigate('map')}
+              aria-label="Explore wildlife map"
             >
-              <MapPin size={20} />
+              <MapPin size={20} aria-hidden="true" />
               Explore Map
             </button>
           </div>
+
+          <div className="hero-trust">
+            <div className="hero-trust-item">
+              <CheckCircle size={15} aria-hidden="true" />
+              <span>Free to use</span>
+            </div>
+            <div className="hero-trust-item">
+              <Globe size={15} aria-hidden="true" />
+              <span>120+ countries</span>
+            </div>
+            <div className="hero-trust-item">
+              <Shield size={15} aria-hidden="true" />
+              <span>Privacy first</span>
+            </div>
+            <div className="hero-trust-item">
+              <TreePine size={15} aria-hidden="true" />
+              <span>Works offline</span>
+            </div>
+          </div>
         </div>
 
-        <div className="hero-image">
+        <div className="hero-image" aria-hidden="true">
           <div className="floating-card floating-card-1">
-            <img src="/images/wildlife/Butterfly.jpg" alt="Butterfly" />
+            <img src="/images/wildlife/Butterfly.jpg" alt="Monarch Butterfly" loading="eager" />
             <div className="card-overlay">
               <span className="species-name">Monarch Butterfly</span>
-              <span className="confidence-badge">96% match</span>
+              <span className="species-meta">Danaus plexippus</span>
             </div>
           </div>
           <div className="floating-card floating-card-2">
-            <img src="/images/wildlife/fox.jpg" alt="Fox" />
+            <img src="/images/wildlife/fox.jpg" alt="Red Fox" loading="eager" />
             <div className="card-overlay">
               <span className="species-name">Red Fox</span>
-              <span className="confidence-badge">89% match</span>
+              <span className="species-meta">Vulpes vulpes</span>
             </div>
           </div>
           <div className="floating-card floating-card-3">
-            <img src="/images/wildlife/eagle.jpg" alt="Eagle" />
+            <img src="/images/wildlife/eagle.jpg" alt="Bald Eagle" loading="eager" style={{ objectPosition: 'center 25%' }} />
             <div className="card-overlay">
               <span className="species-name">Bald Eagle</span>
-              <span className="confidence-badge">94% match</span>
+              <span className="species-meta">Haliaeetus leucocephalus</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="stats-section">
+      {/* ── STATS ── */}
+      <section className="stats-section" aria-label="Statistics">
         <div className="stats-container">
-          {stats.map((stat, index) => {
+          {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (
-              <div 
-                key={index} 
-                className="stat-item"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <Icon className="stat-icon" size={32} />
+              <div key={i} className="stat-item">
+                <Icon className="stat-icon" size={28} aria-hidden="true" />
                 <div className="stat-value">{stat.value}</div>
                 <div className="stat-label">{stat.label}</div>
               </div>
@@ -190,29 +200,59 @@ export default function HomePage({ onNavigate }) {
         </div>
       </section>
 
-      <section className="features-section">
+      {/* ── WILDLIFE GALLERY ── */}
+      <section className="gallery-section" aria-label="Wildlife gallery">
         <div className="section-header">
-          <h2 className="section-title">Powerful Features</h2>
-          <p className="section-subtitle">
-            Everything you need to explore and protect wildlife
-          </p>
+          <div className="section-eyebrow">
+            <Eye size={14} aria-hidden="true" />
+            <span>Community Sightings</span>
+          </div>
+          <h2 className="section-title">Wildlife in Focus</h2>
+          <p className="section-subtitle">Real observations submitted by our global community of citizen scientists</p>
         </div>
+        <div className="gallery-grid">
+          {galleryItems.map((item, i) => (
+            <div
+              key={i}
+              className={`gallery-item ${item.className}`}
+              onClick={() => onNavigate('feed')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && onNavigate('feed')}
+              aria-label={`View ${item.species} observation`}
+            >
+              <img src={item.src} alt={item.species} loading="lazy" style={{ objectPosition: item.objectPos }} />
+              <div className="gallery-label">
+                <span className="gallery-species">{item.species}</span>
+                <span className="gallery-location">
+                  <MapPin size={11} aria-hidden="true" />
+                  {item.location}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
+      {/* ── FEATURES ── */}
+      <section className="features-section" aria-label="Features">
+        <div className="section-header">
+          <div className="section-eyebrow">
+            <Sparkles size={14} aria-hidden="true" />
+            <span>Capabilities</span>
+          </div>
+          <h2 className="section-title">Built for the Field</h2>
+          <p className="section-subtitle">Professional-grade tools designed for every level of wildlife enthusiast</p>
+        </div>
         <div className="features-grid">
-          {features.map((feature, index) => {
+          {features.map((feature, i) => {
             const Icon = feature.icon;
             return (
-              <div 
-                key={index} 
-                className="feature-card"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div 
-                  className="feature-icon"
-                  style={{ background: feature.gradient }}
-                >
-                  <Icon size={32} />
+              <div key={i} className="feature-card">
+                <div className="feature-icon-wrap" style={{ background: feature.gradient }} aria-hidden="true">
+                  <Icon size={28} />
                 </div>
+                <span className="feature-tag">{feature.tag}</span>
                 <h3 className="feature-title">{feature.title}</h3>
                 <p className="feature-description">{feature.description}</p>
               </div>
@@ -221,32 +261,30 @@ export default function HomePage({ onNavigate }) {
         </div>
       </section>
 
-      <section className="how-it-works-section">
+      {/* ── HOW IT WORKS ── */}
+      <section className="how-it-works-section" aria-label="How it works">
         <div className="section-header">
-          <h2 className="section-title">How It Works</h2>
-          <p className="section-subtitle">
-            Start contributing to wildlife conservation in three simple steps
-          </p>
+          <div className="section-eyebrow">
+            <Zap size={14} aria-hidden="true" />
+            <span>Getting Started</span>
+          </div>
+          <h2 className="section-title">Three Steps to Discovery</h2>
+          <p className="section-subtitle">Start contributing to global wildlife conservation in under a minute</p>
         </div>
-
         <div className="steps-container">
-          {steps.map((step, index) => {
+          {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div 
-                key={index} 
-                className="step-item"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="step-number">{step.number}</div>
-                <div className="step-icon">
-                  <Icon size={40} />
+              <div key={i} className="step-item">
+                <div className="step-number" aria-hidden="true">{step.number}</div>
+                <div className="step-icon-wrap">
+                  <Icon size={36} aria-hidden="true" />
                 </div>
                 <h3 className="step-title">{step.title}</h3>
                 <p className="step-description">{step.description}</p>
-                {index < steps.length - 1 && (
-                  <div className="step-connector">
-                    <ArrowRight size={24} />
+                {i < steps.length - 1 && (
+                  <div className="step-connector" aria-hidden="true">
+                    <ArrowRight size={22} />
                   </div>
                 )}
               </div>
@@ -255,11 +293,45 @@ export default function HomePage({ onNavigate }) {
         </div>
       </section>
 
-      <section className="impact-section">
+      {/* ── TESTIMONIALS ── */}
+      <section className="testimonials-section" aria-label="Testimonials">
+        <div className="section-header">
+          <div className="section-eyebrow">
+            <Star size={14} aria-hidden="true" />
+            <span>Community Voice</span>
+          </div>
+          <h2 className="section-title">Trusted by Naturalists</h2>
+          <p className="section-subtitle">Hear from the people making real conservation impact</p>
+        </div>
+        <div className="testimonials-grid">
+          {testimonials.map((t, i) => (
+            <div key={i} className="testimonial-card">
+              <div className="testimonial-stars" aria-label={`${t.stars} stars`}>
+                {Array.from({ length: t.stars }).map((_, j) => (
+                  <Star key={j} size={14} fill="currentColor" aria-hidden="true" />
+                ))}
+              </div>
+              <p className="testimonial-text">"{t.text}"</p>
+              <div className="testimonial-author">
+                <div className="testimonial-avatar" aria-hidden="true">
+                  {t.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="testimonial-name">{t.name}</div>
+                  <div className="testimonial-role">{t.role}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── IMPACT ── */}
+      <section className="impact-section" aria-label="Conservation impact">
         <div className="impact-content">
           <div className="impact-text">
             <div className="impact-badge">
-              <Shield size={16} />
+              <Shield size={14} aria-hidden="true" />
               <span>Conservation Impact</span>
             </div>
             <h2 className="impact-title">
@@ -269,58 +341,80 @@ export default function HomePage({ onNavigate }) {
             </h2>
             <p className="impact-description">
               Every species you identify helps researchers track biodiversity,
-              monitor endangered species, and protect natural habitats. Join our 
-              community of citizen scientists making a global impact.
+              monitor endangered species populations, and advocate for the
+              protection of natural habitats. Join our community of citizen
+              scientists making a verifiable global impact.
             </p>
             <div className="impact-stats">
               <div className="impact-stat">
-                <TrendingUp size={24} />
+                <TrendingUp size={22} aria-hidden="true" />
                 <div>
                   <div className="impact-stat-value">15+</div>
-                  <div className="impact-stat-label">Species Protected</div>
+                  <div className="impact-stat-label">Species Brought Back from Brink</div>
                 </div>
               </div>
               <div className="impact-stat">
-                <Globe size={24} />
+                <Globe size={22} aria-hidden="true" />
                 <div>
                   <div className="impact-stat-value">120+</div>
-                  <div className="impact-stat-label">Countries Covered</div>
+                  <div className="impact-stat-label">Countries with Active Research</div>
+                </div>
+              </div>
+              <div className="impact-stat">
+                <Award size={22} aria-hidden="true" />
+                <div>
+                  <div className="impact-stat-value">40+</div>
+                  <div className="impact-stat-label">Partner Universities & NGOs</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="impact-visual">
-            <div className="impact-circle impact-circle-1"></div>
-            <div className="impact-circle impact-circle-2"></div>
-            <div className="impact-circle impact-circle-3"></div>
+          <div className="impact-visual" aria-hidden="true">
+            <div className="impact-ring impact-ring-3" />
+            <div className="impact-ring impact-ring-2" />
+            <div className="impact-ring impact-ring-1" />
+            <div className="impact-center">
+              <TreePine size={48} />
+              <span>Conservation</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="cta-section">
+      {/* ── CTA ── */}
+      <section className="cta-section" aria-label="Call to action">
+        <div className="cta-bg" aria-hidden="true" />
         <div className="cta-content">
+          <div className="cta-eyebrow">
+            <Leaf size={14} aria-hidden="true" />
+            <span>Join the Movement</span>
+          </div>
           <h2 className="cta-title">Ready to Start Your Journey?</h2>
           <p className="cta-description">
-            Join our community and help protect wildlife for future generations
+            Join 50,000+ citizen scientists and help protect wildlife for future generations.
+            Every observation counts.
           </p>
           <div className="cta-actions">
-            <button 
+            <button
               className="btn-cta btn-cta-primary"
               onClick={() => onNavigate('scan')}
+              aria-label="Start scanning wildlife now"
             >
-              <Camera size={20} />
+              <Camera size={20} aria-hidden="true" />
               Start Scanning Now
             </button>
-            <button 
+            <button
               className="btn-cta btn-cta-secondary"
               onClick={() => onNavigate('feed')}
+              aria-label="Join the community"
             >
-              <Users size={20} />
+              <Users size={20} aria-hidden="true" />
               Join Community
             </button>
           </div>
         </div>
       </section>
+
     </div>
   );
 }

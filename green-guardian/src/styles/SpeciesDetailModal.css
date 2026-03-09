@@ -281,3 +281,64 @@
     font-size: 24px;
   }
 }
+
+/* =================== DARK MODE =================== */
+[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme="dark"] .species-modal {
+  background: #1e3a1e;
+}
+
+[data-theme="dark"] .modal-close {
+  background: rgba(30, 60, 30, 0.95);
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .modal-close:hover {
+  background: #2d5016;
+}
+
+[data-theme="dark"] .species-name {
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .scientific-name {
+  color: #81b29a;
+}
+
+[data-theme="dark"] .info-section {
+  border-bottom-color: rgba(127, 184, 0, 0.12);
+}
+
+[data-theme="dark"] .info-section h3 {
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .info-section p {
+  color: #c8e4c8;
+}
+
+[data-theme="dark"] .prediction-item {
+  background: #162a16;
+}
+
+[data-theme="dark"] .pred-name {
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .btn-icon-round {
+  background: #162a16;
+  border-color: rgba(127, 184, 0, 0.2);
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .btn-icon-round:hover {
+  background: #2d5016;
+  border-color: rgba(127, 184, 0, 0.4);
+}
+
+[data-theme="dark"] .accuracy {
+  color: #81b29a;
+}

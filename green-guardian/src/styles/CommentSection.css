@@ -226,3 +226,45 @@
     height: 32px;
   }
 }
+
+/* =================== DARK MODE =================== */
+[data-theme="dark"] .comment-section {
+  border-top-color: rgba(127, 184, 0, 0.12);
+}
+
+[data-theme="dark"] .comment-input-wrapper {
+  background: #162a16;
+  border-color: rgba(127, 184, 0, 0.15);
+}
+
+[data-theme="dark"] .comment-input-wrapper:focus-within {
+  border-color: #7fb800;
+  box-shadow: 0 2px 8px rgba(127, 184, 0, 0.15), 0 0 0 3px rgba(127, 184, 0, 0.1);
+}
+
+[data-theme="dark"] .comment-avatar {
+  background: #1e3a1e;
+  color: #6b9b6b;
+}
+
+[data-theme="dark"] .reply-indicator {
+  background: #162a16;
+  color: #81b29a;
+}
+
+[data-theme="dark"] .reply-indicator button {
+  color: #7fb800;
+}
+
+[data-theme="dark"] .reply-indicator button:hover {
+  background: rgba(127, 184, 0, 0.1);
+}
+
+[data-theme="dark"] .action-btn:hover {
+  background: #162a16;
+  color: #e8f2e3;
+}
+
+[data-theme="dark"] .replies {
+  border-left-color: rgba(127, 184, 0, 0.2);
+}

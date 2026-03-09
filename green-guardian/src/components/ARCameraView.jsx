@@ -186,12 +186,6 @@ export default function ARCameraView({ targetLocation, targetName, onClose }) {
         </>
       )}
 
-      {gpsError && (
-        <div className="ar-gps-error">
-          <p>GPS Error: {gpsError}</p>
-        </div>
-      )}
-
       {!location && !gpsError && (
         <div className="ar-loading">
           <div className="loading-spinner"></div>

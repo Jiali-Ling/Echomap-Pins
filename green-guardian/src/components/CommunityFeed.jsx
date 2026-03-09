@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Heart, MessageCircle, MapPin, Award, Filter, Search, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Award, Filter, Search, Trash2, Leaf } from "lucide-react";
 import "../styles/CommunityFeed.css";
 
 export default function CommunityFeed({ observations, onSelectObservation, currentUserId, onDeleteObservation }) {
@@ -134,17 +134,8 @@ function ObservationCard({ observation, onClick, onDelete }) {
               loading="lazy"
             />
           ) : (
-            <div style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              color: "white",
-              fontSize: "48px",
-            }}>
-              🦋
+            <div className="card-image-fallback">
+              <Leaf size={48} />
             </div>
           )}
         </div>

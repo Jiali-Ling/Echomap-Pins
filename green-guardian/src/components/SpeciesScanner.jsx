@@ -48,13 +48,13 @@ export default function SpeciesScanner({ onCapture, onCancel }) {
       }
     } catch (err) {
       if (err.name === "NotAllowedError") {
-        setError("Camera permission denied. Please allow camera access in your browser settings.");
+        setError("Please allow camera access. Check browser settings if needed.");
       } else if (err.name === "NotFoundError") {
-        setError("No camera found on this device.");
-      } else if (err.message.includes("HTTPS")) {
-        setError("Camera requires HTTPS. Please use a secure connection or Android App.");
+        setError("No camera detected on this device.");
+      } else if (err.name === "NotSupportedError" || err.name === "TypeError") {
+        setError("Camera not supported. HTTPS may be required on this device.");
       } else {
-        setError("Unable to access camera: " + err.message);
+        setError("Unable to access camera. Try refreshing the page.");
       }
     }
   };
@@ -172,15 +172,28 @@ export default function SpeciesScanner({ onCapture, onCancel }) {
         )}
 
         {error && (
-          <div className="error-message">
-            <AlertCircle size={20} />
-            <span>{error}</span>
+          <div className="error-overlay">
+            <div className="error-card">
+              <AlertCircle size={48} />
+              <h3>Camera Access Required</h3>
+              <p>{error}</p>
+              <button className="btn-retry" onClick={startCamera}>
+                <RotateCcw size={20} />
+                Retry Camera Access
+              </button>
+              <div className="error-card-help">
+                <div className="error-card-help-title">Need Help?</div>
+                <div className="error-card-help-text">
+                  Chrome: Tap the lock icon in address bar → Site settings → Camera → Allow
+                </div>
+              </div>
+            </div>
           </div>
         )}
         
         {modelError && (
-          <div className="error-message">
-            <AlertCircle size={20} />
+          <div className="warning-toast">
+            <AlertCircle size={16} />
             <span>{modelError}</span>
           </div>
         )}

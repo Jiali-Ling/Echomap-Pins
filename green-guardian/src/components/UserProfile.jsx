@@ -1,7 +1,9 @@
+import { useRef } from "react";
 import { User, Award, MapPin, Camera, Settings, LogOut, Trash2 } from "lucide-react";
 import "../styles/UserProfile.css";
 
-export default function UserProfile({ user, observations, onEditProfile, onLogout, onDeleteObservation, onObservationClick }) {
+export default function UserProfile({ user, observations, onEditProfile, onLogout, onDeleteObservation, onObservationClick, onUpdateAvatar }) {
+  const fileInputRef = useRef(null);
   const userObservations = observations.filter((obs) => obs.userId === user.id);
   const speciesCount = new Set(userObservations.map((obs) => obs.species)).size;
   const totalObservations = userObservations.length;
@@ -10,12 +12,50 @@ export default function UserProfile({ user, observations, onEditProfile, onLogou
     .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
     .slice(0, 6);
 
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => onUpdateAvatar?.(evt.target.result);
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
   return (
     <div className="user-profile">
       <div className="profile-header">
-        <div className="profile-avatar-large">
-          <User size={48} />
+        <div
+          className="profile-avatar-large"
+          onClick={handleAvatarClick}
+          role="button"
+          tabIndex={0}
+          aria-label="Change profile photo"
+          onKeyDown={(e) => e.key === "Enter" && handleAvatarClick()}
+        >
+          {user.avatar ? (
+            <img src={user.avatar} alt="Profile avatar" className="avatar-img" />
+          ) : (
+            <span className="avatar-initial">
+              {user.username?.charAt(0)?.toUpperCase() || "U"}
+            </span>
+          )}
+          <div className="avatar-upload-overlay" aria-hidden="true">
+            <Camera size={20} />
+            <span>Change</span>
+          </div>
         </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+          aria-label="Upload profile photo"
+        />
         <h1 className="profile-name">{user.username || "Wildlife Observer"}</h1>
         <p className="profile-bio">
           {user.bio || "Exploring and documenting wildlife around the world"}
@@ -66,15 +106,13 @@ export default function UserProfile({ user, observations, onEditProfile, onLogou
         ) : (
           <div className="observations-grid">
             {recentObservations.map((obs) => (
-              <div key={obs.id} className="observation-thumb" onClick={() => onObservationClick && onObservationClick(obs)}>
+              <div key={obs.id} className="observation-thumb" onClick={() => onObservationClick?.(obs)}>
                 {onDeleteObservation && (
                   <button
                     className="thumb-delete-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (window.confirm("Delete this observation?")) {
-                        onDeleteObservation(obs.id);
-                      }
+                      if (window.confirm("Delete this observation?")) onDeleteObservation(obs.id);
                     }}
                     aria-label="Delete observation"
                   >
