@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css";
 import usePersistedState from "./hooks/usePersistedState";
 
 // Utils & Data
-import { createId } from "./utils/helpers";
+import { nanoid } from "nanoid";
 import { sampleObservations, defaultUser } from "./data/sampleObservations";
 
 // Components
@@ -48,7 +48,7 @@ export default function App() {
   );
   const [user, setUser] = usePersistedState("green_guardian_user", {
     ...defaultUser,
-    id: createId(),
+    id: nanoid(),
   });
   const [selectedObservation, setSelectedObservation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
@@ -100,7 +100,7 @@ export default function App() {
   const handleCapture = (speciesData) => {
     const now = Date.now();
     const newObservation = {
-      id: createId(),
+      id: nanoid(),
       ...speciesData,
       userId: user.id,
       username: user.username,
@@ -133,7 +133,7 @@ export default function App() {
       prev.map((obs) => {
         if (obs.id === observationId) {
           const newComment = {
-            id: createId(),
+            id: nanoid(),
             userId: user.id,
             username: user.username,
             userAvatar: user.avatar,
@@ -207,7 +207,7 @@ export default function App() {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
       setUser({
-        id: createId(),
+        id: nanoid(),
         username: "Wildlife Observer",
         bio: "Exploring and documenting wildlife around the world",
         avatar: null,

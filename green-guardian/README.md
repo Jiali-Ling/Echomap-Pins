@@ -2,47 +2,47 @@
 
 A progressive web application (PWA) for wildlife observation and environmental monitoring. Built with React 19, this app demonstrates modern web technologies including AI-powered species recognition, real-time GPS tracking, and offline-first architecture.
 
- **Live Demo**: [Add your deployment URL]  
- **Install as App**: Supports "Add to Home Screen" on mobile devices
+Live Demo: [Add your deployment URL]  
+Install as App: Supports "Add to Home Screen" on mobile devices
 
 ---
 
 ## Course Requirements Checklist
 
-### ✅ Progressive Web App (PWA)
-- **Service Worker**: Offline-first caching with Workbox (dev-dist/sw.js)
-- **Web App Manifest**: Installable with custom icons (vite.config.js)
-- **Offline Mode**: All core features work without internet connection
-- **Background Sync**: Queues observations when offline, syncs when online
-- **Cache Strategy**: StaleWhileRevalidate for pages, CacheFirst for images
+### Progressive Web App (PWA)
+- Service Worker: Offline-first caching with Workbox (dev-dist/sw.js)
+- Web App Manifest: Installable with custom icons (vite.config.js)
+- Offline Mode: All core features work without internet connection
+- Background Sync: Queues observations when offline, syncs when online
+- Cache Strategy: StaleWhileRevalidate for pages, CacheFirst for images
 
-### ✅ Device APIs Integration
-- **Camera API**: `navigator.mediaDevices.getUserMedia()` for wildlife photography
-- **Geolocation API**: `navigator.geolocation` for GPS coordinates with accuracy tracking
-- **DeviceOrientation API**: Compass and AR navigation features
-- **LocalStorage**: Persistent state management for observations
-- **IndexedDB**: Large photo storage with idb library
+### Device APIs Integration
+- Camera API: `navigator.mediaDevices.getUserMedia()` for wildlife photography
+- Geolocation API: `navigator.geolocation` for GPS coordinates with accuracy tracking
+- DeviceOrientation API: Compass and AR navigation features
+- LocalStorage: Persistent state management for observations
+- IndexedDB: Large photo storage with idb library
 
-### ✅ Modern Technologies
-- **Framework**: React 19.2.0 with Hooks and functional components
-- **Build Tool**: Vite 7.3.1 with Hot Module Replacement (HMR)
-- **AI/ML**: TensorFlow.js 4.22.0 + MobileNet for on-device species recognition
-- **Mapping**: Leaflet 1.9.4 + React-Leaflet 5.0.0 for interactive maps
-- **Icons**: Lucide React for consistent vector icons
-- **Animations**: Framer Motion for smooth transitions
+### Modern Technologies
+- Framework: React 19.2.0 with Hooks and functional components
+- Build Tool: Vite 7.3.1 with Hot Module Replacement (HMR)
+- AI/ML: TensorFlow.js 4.22.0 + MobileNet for on-device species recognition
+- Mapping: Leaflet 1.9.4 + React-Leaflet 5.0.0 for interactive maps
+- Icons: Lucide React for consistent vector icons
+- Animations: Framer Motion for smooth transitions
 
-### ✅ User Experience
-- **Responsive Design**: Mobile-first with breakpoints for tablet/desktop
-- **Dark Theme**: Modern deep green (#3d5a3d) background with high contrast
-- **Accessibility**: WCAG AA compliant color contrast ratios
-- **Touch Optimized**: Large tap targets and gesture support
-- **Loading States**: Skeleton screens and progress indicators
+### User Experience
+- Responsive Design: Mobile-first with breakpoints for tablet/desktop
+- Dark Theme: Modern deep green (#3d5a3d) background with high contrast
+- Accessibility: WCAG AA compliant color contrast ratios
+- Touch Optimized: Large tap targets and gesture support
+- Loading States: Skeleton screens and progress indicators
 
 ---
 
 ## Features
 
-###  Home Page
+### Home Page
 Scrolling landing page introducing app features with:
 - Animated hero section with background image
 - Statistics showcase (10K+ species, 50K+ users)
@@ -50,21 +50,21 @@ Scrolling landing page introducing app features with:
 - Step-by-step usage guide
 - Conservation impact metrics
 
-###  AI Species Recognition
+### AI Species Recognition
 - Capture wildlife photos using device camera
 - TensorFlow.js processes images locally (no server required)
 - MobileNet model provides species predictions with confidence scores
 - Works offline once model is loaded (~20MB)
 - Fallback to manual entry if AI unavailable
 
-###  Interactive Map
+### Interactive Map
 - Leaflet map shows all observation locations
 - Custom markers for different species
 - Click markers to view observation details
 - Real-time GPS positioning with blue location marker
 - Zoom and pan with touch gestures
 
-###  Community Feed
+### Community Feed
 - Grid layout of wildlife observations from all users
 - Search bar for filtering by species name
 - Filter toggle: "All Observations" / "My Observations"
@@ -72,7 +72,7 @@ Scrolling landing page introducing app features with:
 - Nested comment system with replies
 - Delete your own observations
 
-### 👤 User Profile
+### User Profile
 - Personal statistics (observations, species, locations visited)
 - Achievement badges with animated icons
 - Recent observation history
@@ -83,23 +83,23 @@ Scrolling landing page introducing app features with:
 ## Tech Stack
 
 ### Core
-- **React 19.2.0** - UI framework with hooks
-- **Vite 7.3.1** - Fast build tool with HMR
-- **TensorFlow.js 4.22.0** - Machine learning framework
-- **MobileNet 2.1.1** - Pre-trained image classification
+- React 19.2.0: UI framework with hooks
+- Vite 7.3.1: Fast build tool with HMR
+- TensorFlow.js 4.22.0: Machine learning framework
+- MobileNet 2.1.1: Pre-trained image classification
 
 ### Mapping & Location
-- **Leaflet 1.9.4** - Interactive maps
-- **React-Leaflet 5.0.0** - React wrapper for Leaflet
+- Leaflet 1.9.4: Interactive maps
+- React-Leaflet 5.0.0: React wrapper for Leaflet
 
 ### PWA & Storage
-- **vite-plugin-pwa 1.2.0** - Service worker generation
-- **idb 8.0.3** - IndexedDB for large data storage
-- **LocalStorage API** - Persistent state management
+- vite-plugin-pwa 1.2.0: Service worker generation
+- idb 8.0.3: IndexedDB for large data storage
+- LocalStorage API: Persistent state management
 
 ### UI & Animation
-- **Lucide React 0.468.0** - Icon library (100+ icons)
-- **Framer Motion 12.35.1** - Animation library
+- Lucide React 0.468.0: Icon library (100+ icons)
+- Framer Motion 12.35.1: Animation library
 
 ---
 
@@ -165,25 +165,25 @@ green-guardian/
 
 ## Usage Guide
 
-###  Navigation
+### Navigation
 The app has 5 main tabs in the bottom navigation:
-- **Home** : Introduction and app features
-- **Feed**: Community observations grid
-- **Scan**: Camera for capturing wildlife
-- **Map**: Interactive observation map
-- **Profile**: User statistics and settings
+- Home: Introduction and app features
+- Feed: Community observations grid
+- Scan: Camera for capturing wildlife
+- Map: Interactive observation map
+- Profile: User statistics and settings
 
 ### Taking Observations
-1. Tap the **Scan** tab (camera icon)
+1. Tap the Scan tab (camera icon)
 2. Grant camera permissions when prompted
 3. Point camera at wildlife and tap capture button
 4. Wait for AI to analyze (first load downloads ~20MB model)
 5. Review species prediction and confidence score
 6. Add location notes or description
-7. Tap **Save** to add to community feed
+7. Tap Save to add to community feed
 
 ### Exploring the Map
-1. Tap the **Map** tab
+1. Tap the Map tab
 2. View colored markers for different observations
 3. Tap any marker to see observation details
 4. Use zoom controls or pinch gestures
@@ -191,7 +191,7 @@ The app has 5 main tabs in the bottom navigation:
 6. Sidebar lists all observations in current map view
 
 ### Community Interaction
-1. Browse observations in the **Feed** tab
+1. Browse observations in the Feed tab
 2. Use search bar to find specific species
 3. Toggle filter: "All Observations" or "My Observations"
 4. Tap any card to view full details
@@ -227,8 +227,8 @@ The app has 5 main tabs in the bottom navigation:
 ## Device API Requirements
 
 ### Camera Access
-- **Desktop**: HTTPS required (localhost works for dev)
-- **Mobile**: HTTPS required on iOS Safari
+- Desktop: HTTPS required (localhost works for dev)
+- Mobile: HTTPS required on iOS Safari
 - Grant permission when browser prompts
 - Use rear camera (environment facing) by default
 
@@ -239,9 +239,9 @@ The app has 5 main tabs in the bottom navigation:
 - Fallback to default location if denied
 
 ### Browser Compatibility
-- **Chrome/Edge 90+** (Recommended)
-- **Safari 15+** (iOS 15+)
-- **Firefox 88+**
+- Chrome/Edge 90+ (Recommended)
+- Safari 15+ (iOS 15+)
+- Firefox 88+
 
 ---
 
@@ -268,16 +268,16 @@ The app has 5 main tabs in the bottom navigation:
 ```
 
 ### Typography
-- **UI Font**: System font stack (optimized per OS)
-- **Weights**: 400 (regular), 500 (medium), 600 (semibold), 700 (bold), 800 (extrabold)
-- **Contrast**: WCAG AA compliant (white on #3d5a3d = 8.67:1)
+- UI Font: System font stack (optimized per OS)
+- Weights: 400 (regular), 500 (medium), 600 (semibold), 700 (bold), 800 (extrabold)
+- Contrast: WCAG AA compliant (white on #3d5a3d = 8.67:1)
 
 ### Animations
-- **Timing**: cubic-bezier(0.4, 0, 0.2, 1) universally
-- **Hover**: translateY(-2px to -8px) with shadow increase
-- **Active**: scale(0.95-0.98) for press feedback
-- **Entry**: fadeIn, fadeInUp, slideInDown, bounceIn
-- **Scroll**: Parallax effects and staggered animations
+- Timing: cubic-bezier(0.4, 0, 0.2, 1) universally
+- Hover: translateY(-2px to -8px) with shadow increase
+- Active: scale(0.95-0.98) for press feedback
+- Entry: fadeIn, fadeInUp, slideInDown, bounceIn
+- Scroll: Parallax effects and staggered animations
 
 ---
 
@@ -332,11 +332,11 @@ App.jsx (parent)
 
 ## Known Limitations
 
-1. **AI Accuracy**: MobileNet trained on ImageNet (general objects), not specialized wildlife database. Predictions may be generic.
-2. **Offline AI**: Model must download once before offline use possible.
-3. **HTTPS Required**: Camera/GPS APIs require secure context.
-4. **Browser Support**: Safari < 15 may have limited functionality.
-5. **Storage Limits**: Browser may clear cache if storage runs low.
+1. AI Accuracy: MobileNet trained on ImageNet (general objects), not specialized wildlife database. Predictions may be generic.
+2. Offline AI: Model must download once before offline use possible.
+3. HTTPS Required: Camera/GPS APIs require secure context.
+4. Browser Support: Safari < 15 may have limited functionality.
+5. Storage Limits: Browser may clear cache if storage runs low.
 
 ---
 
@@ -356,34 +356,34 @@ App.jsx (parent)
 
 ## Academic Context
 
-**Course**: Dynamic Web Technologies  
-**Institution**: [Your University]  
-**Year**: 2025-2026  
-**Purpose**: Educational project demonstrating PWA development
+Course: Dynamic Web Technologies  
+Institution: [Your University]  
+Year: 2025-2026  
+Purpose: Educational project demonstrating PWA development
 
 ### Assignment Requirements Met
-✅ Progressive Web App with Service Worker  
-✅ Web App Manifest for installation  
-✅ Offline-first architecture  
-✅ Device API integration (Camera, GPS, Orientation)  
-✅ Modern JavaScript framework (React 19)  
-✅ Responsive mobile-first design  
-✅ Local data persistence (LocalStorage + IndexedDB)  
-✅ Third-party library integration (TensorFlow.js, Leaflet)  
-✅ Clean code structure with components  
-✅ Professional UI/UX design
+- Progressive Web App with Service Worker  
+- Web App Manifest for installation  
+- Offline-first architecture  
+- Device API integration (Camera, GPS, Orientation)  
+- Modern JavaScript framework (React 19)  
+- Responsive mobile-first design  
+- Local data persistence (LocalStorage + IndexedDB)  
+- Third-party library integration (TensorFlow.js, Leaflet)  
+- Clean code structure with components  
+- Professional UI/UX design
 
 ---
 
 ## Credits & Attribution
 
 ### Open Source Libraries
-- **TensorFlow.js** - Apache 2.0 License
-- **MobileNet** - Apache 2.0 License
-- **Leaflet** - BSD-2-Clause License
-- **React** - MIT License
-- **Lucide Icons** - ISC License
-- **Framer Motion** - MIT License
+- TensorFlow.js: Apache 2.0 License
+- MobileNet: Apache 2.0 License
+- Leaflet: BSD-2-Clause License
+- React: MIT License
+- Lucide Icons: ISC License
+- Framer Motion: MIT License
 
 ### Design Inspiration
 - Modern travel and nature apps
@@ -398,20 +398,20 @@ App.jsx (parent)
 
 ## License
 
-This project is for **educational purposes only** as part of university coursework.  
+This project is for educational purposes only as part of university coursework.  
 Not intended for commercial use or public distribution.
 
-**Copyright © 2026 [Your Name]**  
+Copyright © 2026 [Your Name]  
 All Rights Reserved
 
 ---
 
 ## Developer
 
-**Name**: [Your Name]  
-**Student ID**: [Your ID]  
-**Email**: [Your Email]  
-**GitHub**: [Your GitHub Profile]
+Name: [Your Name]  
+Student ID: [Your ID]  
+Email: [Your Email]  
+GitHub: [Your GitHub Profile]
 
 ---
 
@@ -425,6 +425,6 @@ Special thanks to:
 
 ---
 
-**Last Updated**: March 2026  
-**Version**: 1.0.0  
-**Status**: Completed ✅
+Last Updated: March 2026  
+Version: 1.0.0  
+Status: Completed

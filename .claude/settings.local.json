@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx skills:*)",
+      "Bash(node:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

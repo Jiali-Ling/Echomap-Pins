@@ -1,9 +1,3 @@
-import { nanoid } from 'nanoid';
-
-export function createId() {
-  return nanoid();
-}
-
 export function formatDistance(meters) {
   if (meters < 1000) {
     return `${Math.round(meters)}m`;
