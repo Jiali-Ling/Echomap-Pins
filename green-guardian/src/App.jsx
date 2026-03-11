@@ -1,18 +1,9 @@
-// React imports
-import { useState, useEffect } from "react";
-
-// Third-party libraries
+﻿import { useState, useEffect } from "react";
 import { Moon, Sun, WifiOff } from "lucide-react";
 import "leaflet/dist/leaflet.css";
-
-// Hooks
 import usePersistedState from "./hooks/usePersistedState";
-
-// Utils & Data
 import { nanoid } from "nanoid";
 import { sampleObservations, defaultUser } from "./data/sampleObservations";
-
-// Components
 import BottomNav from "./components/BottomNav";
 import BottomSheetModal from "./components/BottomSheetModal";
 import CommentSection from "./components/CommentSection";
@@ -23,10 +14,7 @@ import NavigationPanel from "./components/NavigationPanel";
 import SpeciesDetailModal from "./components/SpeciesDetailModal";
 import SpeciesScanner from "./components/SpeciesScanner";
 import UserProfile from "./components/UserProfile";
-
-// Styles
 import "./App.css";
-import "./styles/ARCameraView.css";
 import "./styles/BottomNav.css";
 import "./styles/BottomSheetModal.css";
 import "./styles/CommentSection.css";
