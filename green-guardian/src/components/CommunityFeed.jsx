@@ -1,16 +1,25 @@
 import { useState, useMemo } from "react";
-import { Heart, MessageCircle, MapPin, Award, Filter, Search, Trash2, Leaf } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Award, Search, Trash2, Leaf } from "lucide-react";
 import "../styles/CommunityFeed.css";
 
-export default function CommunityFeed({ observations, onSelectObservation, currentUserId, onDeleteObservation, onToggleFavorite, onToggleVerified, onTogglePublic }) {
-  const [filter, setFilter] = useState("all");
+export default function CommunityFeed({ observations, onSelectObservation, currentUserId, onDeleteObservation, onTogglePublic }) {
+  const [scopeFilter, setScopeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredObservations = useMemo(() => {
     let result = [...observations];
 
-    if (filter === "mine") {
+    if (scopeFilter === "mine") {
       result = result.filter((obs) => obs.userId === currentUserId);
+    }
+
+    if (statusFilter === "pending") {
+      result = result.filter((obs) => obs.isPublic === false);
+    }
+
+    if (statusFilter === "done") {
+      result = result.filter((obs) => obs.isPublic !== false);
     }
 
     if (searchTerm) {
@@ -22,7 +31,7 @@ export default function CommunityFeed({ observations, onSelectObservation, curre
     }
 
     return result.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-  }, [observations, filter, searchTerm, currentUserId]);
+  }, [observations, scopeFilter, statusFilter, searchTerm, currentUserId]);
 
   return (
     <div className="community-feed">
@@ -44,16 +53,37 @@ export default function CommunityFeed({ observations, onSelectObservation, curre
 
         <div className="filter-buttons">
           <button
-            className={`filter-btn ${filter === "all" ? "active" : ""}`}
-            onClick={() => setFilter("all")}
+            className={`filter-btn ${scopeFilter === "all" ? "active" : ""}`}
+            onClick={() => setScopeFilter("all")}
           >
-            All
+            All Posts
           </button>
           <button
-            className={`filter-btn ${filter === "mine" ? "active" : ""}`}
-            onClick={() => setFilter("mine")}
+            className={`filter-btn ${scopeFilter === "mine" ? "active" : ""}`}
+            onClick={() => setScopeFilter("mine")}
           >
-            My Observations
+            My Posts
+          </button>
+        </div>
+
+        <div className="filter-buttons">
+          <button
+            className={`filter-btn ${statusFilter === "all" ? "active" : ""}`}
+            onClick={() => setStatusFilter("all")}
+          >
+            All Visibility
+          </button>
+          <button
+            className={`filter-btn ${statusFilter === "pending" ? "active" : ""}`}
+            onClick={() => setStatusFilter("pending")}
+          >
+            Private
+          </button>
+          <button
+            className={`filter-btn ${statusFilter === "done" ? "active" : ""}`}
+            onClick={() => setStatusFilter("done")}
+          >
+            Public
           </button>
         </div>
       </div>
@@ -72,8 +102,6 @@ export default function CommunityFeed({ observations, onSelectObservation, curre
               observation={obs}
               onClick={() => onSelectObservation(obs)}
               onDelete={obs.userId === currentUserId ? () => onDeleteObservation(obs.id) : null}
-              onToggleFavorite={onToggleFavorite}
-              onToggleVerified={onToggleVerified}
               onTogglePublic={onTogglePublic}
               currentUserId={currentUserId}
             />
@@ -84,7 +112,7 @@ export default function CommunityFeed({ observations, onSelectObservation, curre
   );
 }
 
-function ObservationCard({ observation, onClick, onDelete, onToggleFavorite, onToggleVerified, onTogglePublic, currentUserId }) {
+function ObservationCard({ observation, onClick, onDelete, onTogglePublic, currentUserId }) {
   const [liked, setLiked] = useState(false);
   const [imageError, setImageError] = useState(false);
   const likeCount = observation.likes || 0;
@@ -105,16 +133,6 @@ function ObservationCard({ observation, onClick, onDelete, onToggleFavorite, onT
 
   const handleImageError = () => {
     setImageError(true);
-  };
-
-  const handleToggleFavorite = (e) => {
-    e.stopPropagation();
-    onToggleFavorite(observation.id);
-  };
-
-  const handleToggleVerified = (e) => {
-    e.stopPropagation();
-    onToggleVerified(observation.id);
   };
 
   const handleTogglePublic = (e) => {
@@ -212,22 +230,6 @@ function ObservationCard({ observation, onClick, onDelete, onToggleFavorite, onT
         </div>
 
         <div className="card-toggles">
-          <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={observation.isFavorited || false}
-              onChange={handleToggleFavorite}
-            />
-            <span>Favorite</span>
-          </label>
-          <label className="toggle-label">
-            <input
-              type="checkbox"
-              checked={observation.isVerified || false}
-              onChange={handleToggleVerified}
-            />
-            <span>Verified</span>
-          </label>
           {isOwner && (
             <label className="toggle-label">
               <input
@@ -235,7 +237,7 @@ function ObservationCard({ observation, onClick, onDelete, onToggleFavorite, onT
                 checked={observation.isPublic !== false}
                 onChange={handleTogglePublic}
               />
-              <span>Public</span>
+              <span>Visible to Community</span>
             </label>
           )}
         </div>

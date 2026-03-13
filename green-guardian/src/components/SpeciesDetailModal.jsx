@@ -1,7 +1,7 @@
 import { X, MapPin, Info, Share2, BookmarkPlus, Camera } from "lucide-react";
 import "../styles/SpeciesDetailModal.css";
 
-export default function SpeciesDetailModal({ observation, onClose, onViewSimilar, currentUserId, onToggleFavorite, onToggleVerified, onTogglePublic, children }) {
+export default function SpeciesDetailModal({ observation, onClose, onViewSimilar, currentUserId, onTogglePublic, children }) {
   if (!observation) return null;
 
   const isOwner = observation.userId === currentUserId;
@@ -105,34 +105,18 @@ export default function SpeciesDetailModal({ observation, onClose, onViewSimilar
             </p>
           </div>
 
-          <div className="modal-toggles">
-            <label className="toggle-label">
-              <input
-                type="checkbox"
-                checked={observation.isFavorited || false}
-                onChange={() => onToggleFavorite(observation.id)}
-              />
-              <span>Favorite</span>
-            </label>
-            <label className="toggle-label">
-              <input
-                type="checkbox"
-                checked={observation.isVerified || false}
-                onChange={() => onToggleVerified(observation.id)}
-              />
-              <span>Verified</span>
-            </label>
-            {isOwner && (
+          {isOwner && (
+            <div className="modal-toggles">
               <label className="toggle-label">
                 <input
                   type="checkbox"
                   checked={observation.isPublic !== false}
                   onChange={() => onTogglePublic(observation.id)}
                 />
-                <span>Public</span>
+                <span>Visible to Community</span>
               </label>
-            )}
-          </div>
+            </div>
+          )}
 
           {children}
 

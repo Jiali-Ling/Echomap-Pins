@@ -95,61 +95,61 @@ body {
 :root[data-page="home"] body {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.28)),
-    url("/bg-home.png?v=20260224b");
+    url("/images/wildlife/Butterfly.jpg");
 }
 
 :root[data-page="workspace"] body {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.28)),
-    url("/bg-workspace.png?v=20260224b");
+    url("/images/wildlife/eagle.jpg");
 }
 
 :root[data-page="guide"] body {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.28)),
-    url("/bg-guide.png?v=20260224b");
+    url("/images/wildlife/fox.jpg");
 }
 
 :root[data-page="community"] body {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.28)),
-    url("/bg-community.png?v=20260224b");
+    url("/images/wildlife/Goliath_heron_standing_cropped.jpg");
 }
 
 :root[data-page="data"] body {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.28)),
-    url("/bg-data.png?v=20260224b");
+    url("/images/wildlife/Hausziege_04.jpg");
 }
 
 :root[data-theme="dark"][data-page="home"] body {
   background-image:
     linear-gradient(rgba(18, 18, 18, 0.38), rgba(18, 18, 18, 0.38)),
-    url("/bg-home.png?v=20260224b");
+    url("/images/wildlife/Butterfly.jpg");
 }
 
 :root[data-theme="dark"][data-page="workspace"] body {
   background-image:
     linear-gradient(rgba(18, 18, 18, 0.38), rgba(18, 18, 18, 0.38)),
-    url("/bg-workspace.png?v=20260224b");
+    url("/images/wildlife/eagle.jpg");
 }
 
 :root[data-theme="dark"][data-page="guide"] body {
   background-image:
     linear-gradient(rgba(18, 18, 18, 0.38), rgba(18, 18, 18, 0.38)),
-    url("/bg-guide.png?v=20260224b");
+    url("/images/wildlife/fox.jpg");
 }
 
 :root[data-theme="dark"][data-page="community"] body {
   background-image:
     linear-gradient(rgba(18, 18, 18, 0.38), rgba(18, 18, 18, 0.38)),
-    url("/bg-community.png?v=20260224b");
+    url("/images/wildlife/Goliath_heron_standing_cropped.jpg");
 }
 
 :root[data-theme="dark"][data-page="data"] body {
   background-image:
     linear-gradient(rgba(18, 18, 18, 0.38), rgba(18, 18, 18, 0.38)),
-    url("/bg-data.png?v=20260224b");
+    url("/images/wildlife/Hausziege_04.jpg");
 }
 
 #root {

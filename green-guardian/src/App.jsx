@@ -26,13 +26,33 @@ import "./styles/SpeciesDetailModal.css";
 import "./styles/SpeciesScanner.css";
 import "./styles/UserProfile.css";
 
-export default function App() {
+const normalizeObservation = (observation) => ({
+  ...observation,
+  comments: Array.isArray(observation?.comments) ? observation.comments : [],
+  isPublic: observation?.isPublic !== false,
+});
+
+const normalizeObservations = (observations) => {
+  if (!Array.isArray(observations)) {
+    return sampleObservations.map(normalizeObservation);
+  }
+  return observations.map(normalizeObservation);
+};
+
+const needsObservationNormalization = (observations) =>
+  Array.isArray(observations) && observations.some(
+    (observation) =>
+      !Array.isArray(observation?.comments) ||
+      observation?.isPublic === undefined
+  );
+
+export default function App({ initialObservations }) {
   const [currentView, setCurrentView] = useState("home");
   const [isDark, setIsDark] = usePersistedState("gg_dark_mode", false);
   const [isOnline, setIsOnline] = useState(navigator.onLine ?? true);
   const [observations, setObservations] = usePersistedState(
     "green_guardian_observations",
-    sampleObservations
+    normalizeObservations(initialObservations ?? sampleObservations)
   );
   const [user, setUser] = usePersistedState("green_guardian_user", {
     ...defaultUser,
@@ -59,7 +79,12 @@ export default function App() {
 
   useEffect(() => {
     if (observations.length === 0) {
-      setObservations(sampleObservations);
+      setObservations(normalizeObservations(initialObservations ?? sampleObservations));
+      return;
+    }
+
+    if (needsObservationNormalization(observations)) {
+      setObservations((prev) => normalizeObservations(prev));
     }
   }, []);
 
@@ -95,8 +120,6 @@ export default function App() {
       userAvatar: user.avatar,
       likes: 0,
       comments: [],
-      isFavorited: false,
-      isVerified: false,
       isPublic: true,
       createdAt: now,
       updatedAt: now,
@@ -223,22 +246,6 @@ export default function App() {
     }
   };
 
-  const handleToggleFavorite = (observationId) => {
-    setObservations((prev) =>
-      prev.map((observation) =>
-        observation.id === observationId ? { ...observation, isFavorited: !observation.isFavorited } : observation
-      )
-    );
-  };
-
-  const handleToggleVerified = (observationId) => {
-    setObservations((prev) =>
-      prev.map((observation) =>
-        observation.id === observationId ? { ...observation, isVerified: !observation.isVerified } : observation
-      )
-    );
-  };
-
   const handleTogglePublic = (observationId) => {
     setObservations((prev) =>
       prev.map((observation) =>
@@ -266,8 +273,6 @@ export default function App() {
             currentUserId={user.id}
             onSelectObservation={handleObservationClick}
             onDeleteObservation={handleDeleteObservation}
-            onToggleFavorite={handleToggleFavorite}
-            onToggleVerified={handleToggleVerified}
             onTogglePublic={handleTogglePublic}
           />
         )}
@@ -320,8 +325,6 @@ export default function App() {
           observation={selectedObservation}
           onClose={handleCloseDetail}
           currentUserId={user.id}
-          onToggleFavorite={handleToggleFavorite}
-          onToggleVerified={handleToggleVerified}
           onTogglePublic={handleTogglePublic}
           onNavigate={(observation) => {
             setNavigationTarget(observation);
@@ -343,8 +346,6 @@ export default function App() {
           observation={selectedObservation}
           onClose={handleCloseDetail}
           currentUserId={user.id}
-          onToggleFavorite={handleToggleFavorite}
-          onToggleVerified={handleToggleVerified}
           onTogglePublic={handleTogglePublic}
         >
           <CommentSection

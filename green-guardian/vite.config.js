@@ -8,7 +8,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
 
-      includeAssets: ["landing.png", "vite.svg", "iconDWT-192.png", "iconDWT-512.png"],
+      includeAssets: ["vite.svg"],
 
       manifest: {
         name: "Green Guardian",
@@ -19,24 +19,7 @@ export default defineConfig({
         display: "standalone",
         scope: "/",
         start_url: "/",
-        icons: [
-          {
-            src: "iconDWT-192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "iconDWT-512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-          {
-            src: "iconDWT-512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable",
-          },
-        ],
+        icons: [],
       },
 
       workbox: {
