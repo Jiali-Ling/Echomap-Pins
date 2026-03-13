@@ -5,9 +5,18 @@ import { sampleObservations } from "./data/sampleObservations";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
 
-import { registerSW } from "virtual:pwa-register";
-
-registerSW({ immediate: true });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("Service Worker registered! Scope: ", registration.scope);
+      })
+      .catch((err) => {
+        console.log("Service Worker registration failed: ", err);
+      });
+  });
+}
 
 const loadInitialObservations = () => {
   try {

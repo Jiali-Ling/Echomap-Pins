@@ -65,9 +65,11 @@ const needsObservationNormalization = (observations) =>
   );
 
 export default function App({ initialObservations }) {
+
   const [currentView, setCurrentView] = useState("home");
   const [isDark, setIsDark] = usePersistedState("gg_dark_mode", false);
   const [isOnline, setIsOnline] = useState(navigator.onLine ?? true);
+  
   const [observations, setObservations] = usePersistedState(
     "green_guardian_observations",
     normalizeObservations(initialObservations ?? sampleObservations)

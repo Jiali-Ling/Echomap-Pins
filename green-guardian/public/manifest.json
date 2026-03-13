@@ -1,0 +1,27 @@
+{
+  "name": "Green Guardian",
+  "short_name": "Guardian",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff7e6",
+  "theme_color": "#151412",
+  "description": "A wildlife observation app that uses machine learning to identify plant and animal species from photos, helping users learn about local biodiversity and contribute to conservation efforts.",
+  "icons": [
+    {
+      "src": "icons/iconDWT-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/iconDWT-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/iconDWT-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
