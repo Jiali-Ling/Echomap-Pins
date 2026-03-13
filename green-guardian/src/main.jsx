@@ -19,11 +19,11 @@ const loadInitialObservations = () => {
   }
 };
 
-const initialObservations = loadInitialObservations();
+const DATA = loadInitialObservations();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App initialObservations={initialObservations} />
+    <App initialObservations={DATA} />
   </React.StrictMode>
 );
 
