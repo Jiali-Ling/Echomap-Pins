@@ -2,25 +2,26 @@ import { useState, useMemo } from "react";
 import { Heart, MessageCircle, MapPin, Award, Search, Trash2, Leaf } from "lucide-react";
 import "../styles/CommunityFeed.css";
 
+const SCOPE_FILTER_MAP = {
+  all: () => true,
+  mine: (obs, currentUserId) => obs.userId === currentUserId,
+};
+
+const VISIBILITY_FILTER_MAP = {
+  all: () => true,
+  pending: (obs) => obs.isPublic === false,
+  done: (obs) => obs.isPublic !== false,
+};
+
 export default function CommunityFeed({ observations, onSelectObservation, currentUserId, onDeleteObservation, onTogglePublic }) {
   const [scopeFilter, setScopeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredObservations = useMemo(() => {
-    let result = [...observations];
-
-    if (scopeFilter === "mine") {
-      result = result.filter((obs) => obs.userId === currentUserId);
-    }
-
-    if (statusFilter === "pending") {
-      result = result.filter((obs) => obs.isPublic === false);
-    }
-
-    if (statusFilter === "done") {
-      result = result.filter((obs) => obs.isPublic !== false);
-    }
+    let result = [...observations]
+      .filter((obs) => (SCOPE_FILTER_MAP[scopeFilter] || SCOPE_FILTER_MAP.all)(obs, currentUserId))
+      .filter((obs) => (VISIBILITY_FILTER_MAP[statusFilter] || VISIBILITY_FILTER_MAP.all)(obs));
 
     if (searchTerm) {
       result = result.filter(

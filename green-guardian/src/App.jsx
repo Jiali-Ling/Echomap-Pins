@@ -65,7 +65,6 @@ const needsObservationNormalization = (observations) =>
   );
 
 export default function App({ initialObservations }) {
-
   const [currentView, setCurrentView] = useState("home");
   const [isDark, setIsDark] = usePersistedState("gg_dark_mode", false);
   const [isOnline, setIsOnline] = useState(navigator.onLine ?? true);
@@ -81,6 +80,7 @@ export default function App({ initialObservations }) {
   const [selectedObservation, setSelectedObservation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [navigationTarget, setNavigationTarget] = useState(null);
+  const [lastInsertedId, setLastInsertedId] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
@@ -108,29 +108,88 @@ export default function App({ initialObservations }) {
     }
   }, []);
 
-  useEffect(() => {
-    if (!navigator.geolocation) return;
+  const locateObservation = (observationId, coords) => {
+    if (!observationId) return;
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-        });
-      },
-      (error) => {
-        setUserLocation({
-          lat: 40.7128,
-          lng: -74.0060,
-          accuracy: 0,
-        });
-      },
-      { enableHighAccuracy: true, timeout: 5000 }
+    setObservations((prevObservations) =>
+      prevObservations.map((obs) => {
+        if (obs.id === observationId) {
+          return {
+            ...obs,
+            location: coords,
+            updatedAt: Date.now(),
+          };
+        }
+        return obs;
+      })
     );
+
+    setSelectedObservation((prev) =>
+      prev?.id === observationId
+        ? {
+            ...prev,
+            location: coords,
+            updatedAt: Date.now(),
+          }
+        : prev
+    );
+  };
+
+  const geoFindMe = (observationId = null) => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by your browser");
+      error();
+    } else {
+      console.log("Locating...");
+      navigator.geolocation.getCurrentPosition(
+        (position) => success(position, observationId),
+        (err) => error(err),
+        {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+        }
+      );
+    }
+  };
+
+  const success = (position, observationId = null) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    console.log(`Latitude: ${latitude} ° , Longitude: ${longitude} °`);
+
+    console.log(`Latituded:${latitude}, Longitude:${longitude}`);
+    console.log(`Try here: https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`);
+
+    const accuracy = Number(position?.coords?.accuracy);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || !Number.isFinite(accuracy) || accuracy <= 0) {
+      return;
+    }
+
+    const coords = {
+      lat: latitude,
+      lng: longitude,
+      accuracy,
+    };
+
+    setUserLocation(coords);
+
+    const targetId = observationId ?? lastInsertedId;
+    if (targetId) {
+      locateObservation(targetId, coords);
+      setLastInsertedId(null);
+    }
+  };
+
+  const error = () => {
+    console.log("Unable to retrieve your exact location");
+  };
+
+  useEffect(() => {
+    geoFindMe();
   }, []);
 
-  const handleCapture = (speciesData) => {
+  const addObservation = (speciesData) => {
     const now = Date.now();
     const newObservation = {
       id: nanoid(),
@@ -141,20 +200,27 @@ export default function App({ initialObservations }) {
       likes: 0,
       comments: [],
       isPublic: true,
+      location: speciesData.location ?? null,
       createdAt: now,
       updatedAt: now,
     };
 
     setObservations((prev) => [newObservation, ...prev]);
     setSelectedObservation(newObservation);
+    setLastInsertedId(newObservation.id);
+    geoFindMe(newObservation.id);
   };
 
-  const handleCloseDetail = () => {
+  const closeObservationDetail = () => {
     setSelectedObservation(null);
-    setCurrentView("feed");
+    setCurrentView((prev) => (prev === "map" ? "map" : "feed"));
   };
 
-  const handleLike = (observationId) => {
+  const closeMapObservationDetail = () => {
+    setSelectedObservation(null);
+  };
+
+  const likeObservation = (observationId) => {
     setObservations((prev) =>
       prev.map((obs) =>
         obs.id === observationId ? { ...obs, likes: obs.likes + 1 } : obs
@@ -162,7 +228,7 @@ export default function App({ initialObservations }) {
     );
   };
 
-  const handleComment = (observationId, commentText, parentId = null) => {
+  const addObservationComment = (observationId, commentText, parentId = null) => {
     setObservations((prev) =>
       prev.map((observation) => {
         if (observation.id === observationId) {
@@ -186,7 +252,7 @@ export default function App({ initialObservations }) {
     );
   };
 
-  const handleCommentLike = (observationId, commentId) => {
+  const likeObservationComment = (observationId, commentId) => {
     setObservations((prev) =>
       prev.map((observation) => {
         if (observation.id === observationId) {
@@ -204,7 +270,7 @@ export default function App({ initialObservations }) {
     );
   };
 
-  const handleCommentDelete = (observationId, commentId) => {
+  const deleteObservationComment = (observationId, commentId) => {
     setObservations((prev) =>
       prev.map((observation) => {
         if (observation.id === observationId) {
@@ -228,7 +294,7 @@ export default function App({ initialObservations }) {
     );
   };
 
-  const handleEditProfile = () => {
+  const editUserProfile = () => {
     const newUsername = prompt("Enter your username:", user.username);
     const newBio = prompt("Enter your bio:", user.bio);
 
@@ -237,7 +303,7 @@ export default function App({ initialObservations }) {
     }
   };
 
-  const handleLogout = () => {
+  const logoutUser = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
       setUser({
@@ -251,22 +317,22 @@ export default function App({ initialObservations }) {
     }
   };
 
-  const handleUpdateAvatar = (avatarDataUrl) => {
+  const updateUserAvatar = (avatarDataUrl) => {
     setUser((prev) => ({ ...prev, avatar: avatarDataUrl }));
   };
 
-  const handleObservationClick = (observation) => {
+  const selectObservation = (observation) => {
     setSelectedObservation(observation);
   };
 
-  const handleDeleteObservation = (observationId) => {
+  const deleteObservation = (observationId) => {
     setObservations((prev) => prev.filter((obs) => obs.id !== observationId));
     if (selectedObservation?.id === observationId) {
       setSelectedObservation(null);
     }
   };
 
-  const handleTogglePublic = (observationId) => {
+  const toggleObservationVisibility = (observationId) => {
     setObservations((prev) =>
       prev.map((observation) =>
         observation.id === observationId ? { ...observation, isPublic: !observation.isPublic } : observation
@@ -291,15 +357,15 @@ export default function App({ initialObservations }) {
           <CommunityFeed
             observations={observations}
             currentUserId={user.id}
-            onSelectObservation={handleObservationClick}
-            onDeleteObservation={handleDeleteObservation}
-            onTogglePublic={handleTogglePublic}
+            onSelectObservation={selectObservation}
+            onDeleteObservation={deleteObservation}
+            onTogglePublic={toggleObservationVisibility}
           />
         )}
 
         {currentView === "scan" && (
           <SpeciesScanner
-            onCapture={handleCapture}
+            onCapture={addObservation}
             onCancel={() => setCurrentView("feed")}
           />
         )}
@@ -308,7 +374,7 @@ export default function App({ initialObservations }) {
           <MapViewModern
             observations={observations}
             userLocation={userLocation}
-            onObservationClick={handleObservationClick}
+            onObservationClick={selectObservation}
             user={user}
           />
         )}
@@ -317,11 +383,11 @@ export default function App({ initialObservations }) {
           <UserProfile
             user={user}
             observations={observations}
-            onEditProfile={handleEditProfile}
-            onLogout={handleLogout}
-            onDeleteObservation={handleDeleteObservation}
-            onObservationClick={handleObservationClick}
-            onUpdateAvatar={handleUpdateAvatar}
+            onEditProfile={editUserProfile}
+            onLogout={logoutUser}
+            onDeleteObservation={deleteObservation}
+            onObservationClick={selectObservation}
+            onUpdateAvatar={updateUserAvatar}
           />
         )}
       </div>
@@ -343,9 +409,9 @@ export default function App({ initialObservations }) {
       {selectedObservation && currentView === "map" ? (
         <BottomSheetModal
           observation={selectedObservation}
-          onClose={handleCloseDetail}
+          onClose={closeMapObservationDetail}
           currentUserId={user.id}
-          onTogglePublic={handleTogglePublic}
+          onTogglePublic={toggleObservationVisibility}
           onNavigate={(observation) => {
             setNavigationTarget(observation);
             setSelectedObservation(null);
@@ -356,26 +422,26 @@ export default function App({ initialObservations }) {
             comments={selectedObservation.comments || []}
             currentUserId={user.id}
             currentUsername={user.username}
-            onAddComment={handleComment}
-            onLikeComment={handleCommentLike}
-            onDeleteComment={handleCommentDelete}
+            onAddComment={addObservationComment}
+            onLikeComment={likeObservationComment}
+            onDeleteComment={deleteObservationComment}
           />
         </BottomSheetModal>
       ) : selectedObservation ? (
         <SpeciesDetailModal
           observation={selectedObservation}
-          onClose={handleCloseDetail}
+          onClose={closeObservationDetail}
           currentUserId={user.id}
-          onTogglePublic={handleTogglePublic}
+          onTogglePublic={toggleObservationVisibility}
         >
           <CommentSection
             observationId={selectedObservation.id}
             comments={selectedObservation.comments || []}
             currentUserId={user.id}
             currentUsername={user.username}
-            onAddComment={handleComment}
-            onLikeComment={handleCommentLike}
-            onDeleteComment={handleCommentDelete}
+            onAddComment={addObservationComment}
+            onLikeComment={likeObservationComment}
+            onDeleteComment={deleteObservationComment}
           />
         </SpeciesDetailModal>
       ) : null}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 import { MapPin, Locate, TrendingUp, Eye, Heart, Calendar, Leaf, X } from "lucide-react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -111,32 +111,91 @@ function RecentObsItem({ obs, onClick }) {
 
 export default function MapViewModern({ observations = [], userLocation, onObservationClick, user }) {
   const [mapCenter] = useState([32.0603, 118.7969]);
-  const [localUserLocation, setLocalUserLocation] = useState(userLocation);
+  const [localUserLocation, setLocalUserLocation] = useState(() => {
+    const lat = Number(userLocation?.lat);
+    const lng = Number(userLocation?.lng);
+    const accuracy = Number(userLocation?.accuracy);
+    if (Number.isFinite(lat) && Number.isFinite(lng) && Number.isFinite(accuracy) && accuracy > 0) {
+      return {
+        lat,
+        lng,
+        accuracy,
+      };
+    }
+    return null;
+  });
   const [selectedObservation, setSelectedObservation] = useState(null);
 
-  const observationsWithLocation = useMemo(
-    () => observations.filter((obs) => obs.location),
-    [observations]
-  );
+  const hasPreciseUserLocation =
+    Number.isFinite(localUserLocation?.lat) &&
+    Number.isFinite(localUserLocation?.lng) &&
+    Number.isFinite(localUserLocation?.accuracy) &&
+    localUserLocation.accuracy > 0;
 
   const displayObservations = useMemo(() => {
-    if (!localUserLocation) return observationsWithLocation;
-    return observationsWithLocation.map((obs) => {
-      let hash = 0;
-      for (let i = 0; i < obs.id.length; i++) {
-        hash = obs.id.charCodeAt(i) + ((hash << 5) - hash);
+    const fallbackLat = hasPreciseUserLocation ? localUserLocation.lat : mapCenter[0];
+    const fallbackLng = hasPreciseUserLocation ? localUserLocation.lng : mapCenter[1];
+    const overlapCounts = new Map();
+
+    return observations.map((obs, index) => {
+      const rawLat = Number(
+        obs?.location?.lat ??
+          obs?.location?.latitude ??
+          obs?.lat ??
+          obs?.latitude
+      );
+      const rawLng = Number(
+        obs?.location?.lng ??
+          obs?.location?.lon ??
+          obs?.location?.longitude ??
+          obs?.lng ??
+          obs?.lon ??
+          obs?.longitude
+      );
+      const hasValidLocation = Number.isFinite(rawLat) && Number.isFinite(rawLng);
+
+      let baseLat = rawLat;
+      let baseLng = rawLng;
+
+      if (!hasValidLocation) {
+        const idSeed = `${obs.id || ""}-${obs.species || ""}-${index}`;
+        let hash = 0;
+        for (let i = 0; i < idSeed.length; i++) {
+          hash = idSeed.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        const angle = (Math.abs(hash) % 360) * (Math.PI / 180);
+        const radius = 0.01 + (Math.abs(hash >> 8) % 100) * 0.0002;
+        baseLat = fallbackLat + Math.cos(angle) * radius;
+        baseLng = fallbackLng + Math.sin(angle) * radius;
       }
-      const angle = (Math.abs(hash) % 360) * (Math.PI / 180);
-      const radius = 0.004 + (Math.abs(hash >> 8) % 100) * 0.0001;
+
+      const overlapKey = `${baseLat.toFixed(5)},${baseLng.toFixed(5)}`;
+      const overlapIndex = overlapCounts.get(overlapKey) || 0;
+      overlapCounts.set(overlapKey, overlapIndex + 1);
+
+      let finalLat = baseLat;
+      let finalLng = baseLng;
+
+      if (overlapIndex > 0) {
+        // Spread overlapping markers in a tiny spiral so each one is clickable.
+        const spiralAngle = overlapIndex * 2.399963229728653;
+        const spiralRadius = 0.0012 * Math.ceil(overlapIndex / 6);
+        finalLat = baseLat + Math.cos(spiralAngle) * spiralRadius;
+        finalLng = baseLng + Math.sin(spiralAngle) * spiralRadius;
+      }
+
       return {
         ...obs,
+        markerKey: `${obs.id || "obs"}-${index}`,
         location: {
-          lat: localUserLocation.lat + Math.cos(angle) * radius,
-          lng: localUserLocation.lng + Math.sin(angle) * radius,
-        }
+          lat: finalLat,
+          lng: finalLng,
+          accuracy: obs?.location?.accuracy ?? 0,
+        },
       };
     });
-  }, [localUserLocation, observationsWithLocation]);
+  }, [hasPreciseUserLocation, localUserLocation, mapCenter, observations]);
 
   const stats = useMemo(() => ({
     total: observations.length,
@@ -150,8 +209,33 @@ export default function MapViewModern({ observations = [], userLocation, onObser
   );
 
   useEffect(() => {
-    if (userLocation) setLocalUserLocation(userLocation);
+    const lat = Number(userLocation?.lat);
+    const lng = Number(userLocation?.lng);
+    const accuracy = Number(userLocation?.accuracy);
+    if (Number.isFinite(lat) && Number.isFinite(lng) && Number.isFinite(accuracy) && accuracy > 0) {
+      setLocalUserLocation({
+        lat,
+        lng,
+        accuracy,
+      });
+    }
   }, [userLocation]);
+
+  useEffect(() => {
+    if (hasPreciseUserLocation || !navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocalUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+        });
+      },
+      () => {},
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  }, [hasPreciseUserLocation]);
 
   const handleMarkerClick = (obs) => {
     setSelectedObservation(obs);
@@ -205,7 +289,7 @@ export default function MapViewModern({ observations = [], userLocation, onObser
 
               {displayObservations.map((obs) => (
                 <Marker
-                  key={obs.id}
+                  key={obs.markerKey}
                   position={[obs.location.lat, obs.location.lng]}
                   icon={createMarkerIcon()}
                   eventHandlers={{ click: () => handleMarkerClick(obs) }}
@@ -218,14 +302,35 @@ export default function MapViewModern({ observations = [], userLocation, onObser
                 </Marker>
               ))}
 
-              {localUserLocation && (
-                <Marker
-                  position={[localUserLocation.lat, localUserLocation.lng]}
-                  icon={createUserLocationIcon()}
-                />
+              {hasPreciseUserLocation && (
+                <>
+                  <Circle
+                    center={[localUserLocation.lat, localUserLocation.lng]}
+                    radius={Math.max(20, Math.min(localUserLocation.accuracy, 250))}
+                    pathOptions={{
+                      color: "#4285F4",
+                      fillColor: "#4285F4",
+                      fillOpacity: 0.16,
+                      weight: 1,
+                    }}
+                  />
+                  <Marker
+                    position={[localUserLocation.lat, localUserLocation.lng]}
+                    icon={createUserLocationIcon()}
+                  >
+                    <Popup>
+                      <strong>Your location</strong>
+                      <br />
+                      <small>Accuracy: +- {Math.round(localUserLocation.accuracy)}m</small>
+                    </Popup>
+                  </Marker>
+                </>
               )}
 
-              <AutoFitBounds observations={displayObservations} userLocation={localUserLocation} />
+              <AutoFitBounds
+                observations={displayObservations}
+                userLocation={hasPreciseUserLocation ? localUserLocation : null}
+              />
               <LocateControl onLocationFound={setLocalUserLocation} />
             </MapContainer>
           </div>

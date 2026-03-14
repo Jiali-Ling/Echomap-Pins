@@ -109,9 +109,8 @@ export default function HomePage({ onNavigate }) {
           </div>
 
           <h1 className="hero-title">
-            Discover & Protect
-            <br />
-            <span className="hero-title-highlight">Wildlife Together</span>
+            <span className="hero-title-line">Discover & Protect</span>
+            <span className="hero-title-highlight hero-title-line">Wildlife Together</span>
           </h1>
 
           <p className="hero-description">
@@ -345,7 +344,9 @@ export default function HomePage({ onNavigate }) {
               protection of natural habitats. Join our community of citizen
               scientists making a verifiable global impact.
             </p>
-            <div className="impact-stats">
+          </div>
+          <div className="impact-visual">
+            <div className="impact-stats impact-stats--panel">
               <div className="impact-stat">
                 <TrendingUp size={22} aria-hidden="true" />
                 <div>
@@ -367,15 +368,6 @@ export default function HomePage({ onNavigate }) {
                   <div className="impact-stat-label">Partner Universities & NGOs</div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="impact-visual" aria-hidden="true">
-            <div className="impact-ring impact-ring-3" />
-            <div className="impact-ring impact-ring-2" />
-            <div className="impact-ring impact-ring-1" />
-            <div className="impact-center">
-              <TreePine size={48} />
-              <span>Conservation</span>
             </div>
           </div>
         </div>
